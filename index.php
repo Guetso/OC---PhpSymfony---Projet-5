@@ -1,8 +1,8 @@
 <?php
   include './utils/pdo.php';
-  $stmt = $bdd->query(/** @lang text */
-      'SELECT id, titre, contenu, DATE_FORMAT(date_creation, "%d/%m/%Y") AS date,
-      DATE_FORMAT(date_creation, "%Hh%imin%ss") AS time
+  $stmt = $bdd->query(
+      'SELECT id, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y\') AS date,
+      DATE_FORMAT(date_creation, \'%Hh%imin%ss\') AS time
       FROM billets ORDER BY date_creation DESC LIMIT 0, 10');
   $posts = $stmt ->fetchAll();
   $stmt->closeCursor();
