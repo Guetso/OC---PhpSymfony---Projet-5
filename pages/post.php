@@ -34,14 +34,30 @@ $date = $post['date'];
 $time = $post['time'];
 $stmt->closeCursor();
 
+if (isset($_GET['page']) && !empty($_GET['page'])){
+    $pageNbr = (int) ($_GET['page']);
+} else {
+    $pageNbr = 1;
+}
+if ($pageNbr === 0) {
+    $pageNbr = 1;
+}
+
+$commentsPerPage = 5;
+$offset = ($pageNbr - 1) * $commentsPerPage;
+
 $stmt = $bdd->prepare(
     'SELECT id_billet, auteur, commentaire,
    DATE_FORMAT(date_commentaire, "%d/%m/%Y") AS date,
    DATE_FORMAT(date_commentaire, "%Hh%imin%ss") AS time
    FROM commentaires
-   WHERE id_billet = ?'
+   WHERE id_billet = ?
+   LIMIT ? OFFSET ?'
 );
-$stmt->execute(array($id_post));
+$stmt->bindParam(1, $id_post, PDO::PARAM_INT);
+$stmt->bindParam(2, $commentsPerPage, PDO::PARAM_INT);
+$stmt->bindParam(3, $offset, PDO::PARAM_INT);
+$stmt->execute();
 $comments = $stmt ->fetchAll();
 $stmt->closeCursor();
 
@@ -49,6 +65,6 @@ $stmt = $bdd->prepare('SELECT COUNT(*) AS nb_comments FROM commentaires WHERE id
 $stmt->execute(array($_GET['post']));
 $comments_nb = $stmt->fetch()['nb_comments'];
 $stmt->closeCursor();
-$pageCommentNb = round($comments_nb/5);
+$pageCommentNb = ceil($comments_nb/$commentsPerPage);
 
 include '../components/billet.php';

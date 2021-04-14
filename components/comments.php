@@ -1,3 +1,12 @@
+<?php
+if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
+    $errorTitle = 'Erreur';
+    $errorMessage = 'Cette page n\'existe pas !';
+    include '../pages/error.php';
+    die;
+}
+?>
+
 <aside>
   <h2>Commentaires</h2>
     <?php
@@ -16,7 +25,8 @@
     <ul>
       <?php
         for ($i = 1; $i <= $pageCommentNb; $i++) {
-          echo '<li>' . $i . '</li>';
+            $link = './post.php?post=' . htmlspecialchars($id_post) . '&page=' . htmlspecialchars($i);
+          echo '<li>' . '<a href="'. $link .'">' . $i . '</a>' . '</li>';
         }
       ?>
     </ul>
