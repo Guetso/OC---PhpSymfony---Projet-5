@@ -4,7 +4,7 @@
 
 <body>
 <section class="news">
-    <h1>Mon super blog !</h1>
+    <h1><?= $pageTitle ?></h1>
     <span>Derniers billets de blog:</span>
 
     <?php
