@@ -11,10 +11,10 @@ $_GET['post'] = (int) $_GET['post'];
 include '../utils/pdo.php';
 
 $stmt = $bdd->prepare(
-    'SELECT id, titre, contenu, 
-   DATE_FORMAT(date_creation, "%d/%m/%Y") AS date,
-   DATE_FORMAT(date_creation, "%Hh%imin%ss") AS time 
-   FROM billets 
+    'SELECT id, title, content, 
+   DATE_FORMAT(created_at, "%d/%m/%Y") AS date,
+   DATE_FORMAT(created_at, "%Hh%imin%ss") AS time 
+   FROM posts 
    WHERE id = ?'
 );
 $stmt->execute(array($_GET['post']));
@@ -28,8 +28,8 @@ if (!$post) {
 }
 
 $id_post = $post['id'];
-$titre = $post['titre'];
-$contenu = $post['contenu'];
+$titre = $post['title'];
+$contenu = $post['content'];
 $date = $post['date'];
 $time = $post['time'];
 $stmt->closeCursor();
@@ -47,11 +47,11 @@ $commentsPerPage = 5;
 $offset = ($pageNbr - 1) * $commentsPerPage;
 
 $stmt = $bdd->prepare(
-    'SELECT id_billet, auteur, commentaire,
-   DATE_FORMAT(date_commentaire, "%d/%m/%Y") AS date,
-   DATE_FORMAT(date_commentaire, "%Hh%imin%ss") AS time
-   FROM commentaires
-   WHERE id_billet = ?
+    'SELECT post_id, author, content,
+   DATE_FORMAT(created_at, "%d/%m/%Y") AS date,
+   DATE_FORMAT(created_at, "%Hh%imin%ss") AS time
+   FROM comments
+   WHERE post_id = ?
    LIMIT ? OFFSET ?'
 );
 $stmt->bindParam(1, $id_post, PDO::PARAM_INT);
@@ -61,10 +61,10 @@ $stmt->execute();
 $comments = $stmt ->fetchAll();
 $stmt->closeCursor();
 
-$stmt = $bdd->prepare('SELECT COUNT(*) AS nb_comments FROM commentaires WHERE id_billet = ?');
+$stmt = $bdd->prepare('SELECT COUNT(*) AS nb_comments FROM comments WHERE post_id = ?');
 $stmt->execute(array($_GET['post']));
 $comments_nb = $stmt->fetch()['nb_comments'];
 $stmt->closeCursor();
 $pageCommentNb = ceil($comments_nb/$commentsPerPage);
 
-include '../components/billet.php';
+require('../components/post.php');
