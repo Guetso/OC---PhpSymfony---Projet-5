@@ -16,7 +16,7 @@
     </p>
 </article>
 
-<?php include '../components/comments.php' ?>
+<?php include './components/comments.php' ?>
 
 </body>
 </html>

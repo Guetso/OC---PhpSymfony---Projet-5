@@ -1,7 +1,7 @@
 <?php
-    require ('models/post.php');
+require('model.php');
 
-    $posts = getPosts();
-    $pageTitle = 'Mon super blog !';
+$posts = getPosts();
+$pageTitle = 'Mon super blog !';
 
-    require('templates/index.php');
+require('templates/index.php');
