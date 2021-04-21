@@ -13,7 +13,7 @@
             ' le ' . htmlspecialchars($post['date']) .
             ' à ' .  htmlspecialchars($post['time']);
         $postContent = htmlspecialchars($post['content']);
-        $postLink = './pages/post.php?post=' . htmlspecialchars($post['id']); ?>
+        $postLink = './post.php?post=' . htmlspecialchars($post['id']); ?>
         <article>
             <h3><?= $postTitle ?></h3>
             <p><?= $postContent ?>
