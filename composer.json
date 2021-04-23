@@ -1,0 +1,15 @@
+{
+    "name": "guetso/myblog",
+    "description": "Un blog en PHP - Projet 5 OC Parcours Php/Symfony",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Guetso",
+            "email": "legalloisprovensal@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.3"
+    }
+}
