@@ -1,8 +1,5 @@
 <?php
-require 'vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
-
+require('config.php');
 require('model.php');
 
 $posts = getPosts();

@@ -1,4 +1,5 @@
 <?php
+require('config.php');
 require('model.php');
 
 if (!isset($_GET['post'])) {

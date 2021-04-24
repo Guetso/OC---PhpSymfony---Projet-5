@@ -17,7 +17,7 @@ $pageCommentNb = ceil($comments_nb / $commentsPerPage);
 if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
     $errorTitle = 'Erreur';
     $errorMessage = 'Cette page n\'existe pas !';
-    include '../error.php';
+    include './error.php';
     die;
 }
 
