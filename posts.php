@@ -5,6 +5,6 @@ require('model.php');
 $posts = getPosts();
 $pageTitle = 'Mes articles !';
 
-require('templates/posts.php');
+require('templates/pages/posts.php');
 
 /* Change index */

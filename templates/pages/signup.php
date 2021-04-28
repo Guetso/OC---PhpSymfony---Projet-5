@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <h1><?= $pageTitle ?></h1>
 
-<form action="../signup.php" method="post">
+<form action="../../signup.php" method="post">
     <label for="pseudo">Pseudo: </label>
     <input id="pseudo" type="text" name="pseudo">
     <br/>
@@ -20,4 +20,4 @@
 <span><?= $errorMessage ?></span>
 <?php $content = ob_get_clean(); ?>
 
-<?php require('template.php'); ?>
+<?php require('templates/template.php'); ?>

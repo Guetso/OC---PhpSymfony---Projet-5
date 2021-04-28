@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <section class="news">
     <h1><?= $pageTitle ?></h1>
-    <a href="./index.php">Accueil</a>
+    <a href="index.php">Accueil</a>
     <span>Derniers billets de blog:</span>
 
     <?php
@@ -24,4 +24,4 @@
 </section>
 <?php $content = ob_get_clean(); ?>
 
-<?php require('template.php'); ?>
+<?php require('./templates/template.php'); ?>

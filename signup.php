@@ -12,7 +12,6 @@ if (!isset($_POST['pseudo'])
     $errorMessage = 'Il faut renseigner tous les champs !';
 }
 
-
 // $pass_hache = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-require('templates/signup.php');
+require('templates/pages/signup.php');

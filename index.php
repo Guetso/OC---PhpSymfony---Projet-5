@@ -3,4 +3,4 @@ require('config.php');
 
 $pageTitle = 'Bienvenue sur mon blog!';
 
-require('templates/index.php');
+require('templates/pages/index.php');
