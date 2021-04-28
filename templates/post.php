@@ -5,7 +5,7 @@
 <body>
 <article class="news">
     <h1>Mon super blog !</h1>
-    <a href="index.php">Retour à la liste des billets</a>
+    <a href="posts.php">Retour à la liste des billets</a>
 
     <h3>
         <?= $postTitle ?>
