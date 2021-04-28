@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <h1><?= $pageTitle ?></h1>
 
-<form action="../../signup.php" method="post">
+<form method="post">
     <input type="hidden" name="controlSubmit">
 
     <label for="pseudo">Pseudo: </label>
