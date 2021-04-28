@@ -3,27 +3,7 @@
 <?php include './templates/head.php' ?>
 
 <body>
-<section class="news">
-    <h1><?= $pageTitle ?></h1>
-    <span>Derniers billets de blog:</span>
-
-    <?php
-    foreach ($posts as $post) {
-        $postTitle = htmlspecialchars($post['title']) .
-            ' le ' . htmlspecialchars($post['date']) .
-            ' à ' .  htmlspecialchars($post['time']);
-        $postContent = htmlspecialchars($post['content']);
-        $postLink = './post.php?post=' . htmlspecialchars($post['id']); ?>
-        <article>
-            <h3><?= $postTitle ?></h3>
-            <p><?= $postContent ?>
-                <br />
-                <a href="<?=$postLink ?>">Commentaires</a>
-            </p>
-        </article>
-        <?php
-    }
-    ?>
-</section>
+<h1>Bienvenue sur mon blog</h1>
+<a href="posts.php">Voir les articles</a>
 </body>
 </html>
