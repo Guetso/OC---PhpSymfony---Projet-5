@@ -2,6 +2,8 @@
 <h1><?= $pageTitle ?></h1>
 
 <form action="../../signup.php" method="post">
+    <input type="hidden" name="controlSubmit">
+
     <label for="pseudo">Pseudo: </label>
     <input id="pseudo" type="text" name="pseudo">
     <br/>
