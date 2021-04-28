@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<?php include './templates/head.php' ?>
-
-<body>
+<?php ob_start(); ?>
 <section class="news">
     <h1><?= $pageTitle ?></h1>
     <a href="./index.php">Accueil</a>
@@ -26,5 +22,6 @@
     }
     ?>
 </section>
-</body>
-</html>
+<?php $content = ob_get_clean(); ?>
+
+<?php require('template.php'); ?>

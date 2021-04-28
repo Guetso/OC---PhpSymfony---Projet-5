@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<?php include 'head.php' ?>
-
-<body>
+<?php ob_start(); ?>
 <article class="news">
     <h1>Mon super blog !</h1>
     <a href="posts.php">Retour à la liste des billets</a>
@@ -17,6 +13,6 @@
 </article>
 
 <?php include './components/comments.php' ?>
+<?php $content = ob_get_clean(); ?>
 
-</body>
-</html>
+<?php require('template.php'); ?>

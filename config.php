@@ -3,4 +3,4 @@ require 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-$style = 'style.css';
+// $style = 'style.css';
