@@ -1,19 +1,21 @@
 <?php
 require('./utils/pdo.php');
 
-function getPosts() {
+function getPosts()
+{
     $bdd = dbConnect();
     $stmt = $bdd->query(
         'SELECT id, title, content, DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date,
       DATE_FORMAT(created_at, \'%Hh%imin%ss\') AS time
       FROM posts ORDER BY created_at DESC LIMIT 0, 10');
-    $req = $stmt ->fetchAll();
+    $req = $stmt->fetchAll();
     $stmt->closeCursor();
 
     return $req;
 }
 
-function getOnePost($id) {
+function getOnePost($id)
+{
     $bdd = dbConnect();
     $stmt = $bdd->prepare(
         'SELECT id, title, content, 
@@ -29,7 +31,8 @@ function getOnePost($id) {
     return $req;
 }
 
-function getPostComments($id_post, $commentsPerPage, $offset) {
+function getPostComments($id_post, $commentsPerPage, $offset)
+{
     $bdd = dbConnect();
     $stmt = $bdd->prepare(
         'SELECT post_id, author, content,
@@ -48,11 +51,29 @@ function getPostComments($id_post, $commentsPerPage, $offset) {
     return $req;
 }
 
-function getCommentsNb($id_post) {
+function getCommentsNb($id_post)
+{
     $bdd = dbConnect();
     $stmt = $bdd->prepare('SELECT COUNT(*) AS nb_comments FROM comments WHERE post_id = ?');
     $stmt->execute(array($id_post));
     $req = $stmt->fetch()['nb_comments'];
     $stmt->closeCursor();
     return $req;
+}
+
+function signup($pseudo, $pass_hache, $email)
+{
+    $bdd = dbConnect();
+    $stmt = $bdd->prepare('INSERT INTO members (pseudo, pass, email) VALUES(:pseudo, :pass, :email)');
+    try {
+        $stmt->execute(array(
+                'pseudo' => $pseudo,
+                'pass' => $pass_hache,
+                'email' => $email)
+        );
+    } catch (PDOException  $sqlError) {
+        throw $sqlError;
+    } finally {
+        $stmt->closeCursor();
+    }
 }
