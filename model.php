@@ -1,19 +1,28 @@
 <?php
 require('./utils/pdo.php');
 
-function getPosts() {
+/**
+ * @return array
+ */
+function getPosts()
+{
     $bdd = dbConnect();
     $stmt = $bdd->query(
         'SELECT id, title, content, DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date,
       DATE_FORMAT(created_at, \'%Hh%imin%ss\') AS time
       FROM posts ORDER BY created_at DESC LIMIT 0, 10');
-    $req = $stmt ->fetchAll();
+    $req = $stmt->fetchAll();
     $stmt->closeCursor();
 
     return $req;
 }
 
-function getOnePost($id) {
+/**
+ * @param $id
+ * @return mixed
+ */
+function getOnePost($id)
+{
     $bdd = dbConnect();
     $stmt = $bdd->prepare(
         'SELECT id, title, content, 
@@ -29,7 +38,14 @@ function getOnePost($id) {
     return $req;
 }
 
-function getPostComments($id_post, $commentsPerPage, $offset) {
+/**
+ * @param $id_post
+ * @param $commentsPerPage
+ * @param $offset
+ * @return array
+ */
+function getPostComments($id_post, $commentsPerPage, $offset)
+{
     $bdd = dbConnect();
     $stmt = $bdd->prepare(
         'SELECT post_id, author, content,
@@ -48,11 +64,72 @@ function getPostComments($id_post, $commentsPerPage, $offset) {
     return $req;
 }
 
-function getCommentsNb($id_post) {
+/**
+ * @param $id_post
+ * @return mixed
+ */
+function getCommentsNb($id_post)
+{
     $bdd = dbConnect();
     $stmt = $bdd->prepare('SELECT COUNT(*) AS nb_comments FROM comments WHERE post_id = ?');
     $stmt->execute(array($id_post));
     $req = $stmt->fetch()['nb_comments'];
     $stmt->closeCursor();
     return $req;
+}
+
+/**
+ * @param $pseudo
+ * @param $pass_hache
+ * @param $email
+ */
+function signup($pseudo, $pass_hache, $email)
+{
+    $bdd = dbConnect();
+    $stmt = $bdd->prepare('INSERT INTO members (pseudo, pass, email) VALUES(:pseudo, :pass, :email)');
+    try {
+        $stmt->execute(array(
+                'pseudo' => $pseudo,
+                'pass' => $pass_hache,
+                'email' => $email)
+        );
+    } catch (PDOException  $sqlError) {
+        throw $sqlError;
+    } finally {
+        $stmt->closeCursor();
+    }
+}
+
+/**
+ * @param $pseudo
+ * @param $pass
+ * @return mixed
+ * @throws Exception
+ */
+function login($pseudo, $pass)
+{
+    $bdd = dbConnect();
+    $stmt = $bdd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');
+    try {
+        $stmt->execute(array(
+                'pseudo' => $pseudo
+            )
+        );
+        $response = $stmt->fetch();
+        $isPassCorrect = password_verify($pass, $response['pass']?? '');
+        $passError = 'Mauvais identifiant ou mot de passe !';
+        if (!$response) {
+            throw new Exception($passError);
+        } else {
+            if ($isPassCorrect) {
+                return $response;
+            } else {
+                throw new Exception($passError);
+            }
+        }
+    } catch (Exception $e) {
+        throw $e;
+    } finally {
+        $stmt->closeCursor();
+    }
 }

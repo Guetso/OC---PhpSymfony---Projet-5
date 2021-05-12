@@ -21,4 +21,4 @@ if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
     die;
 }
 
-require('templates/comments.php');
+require('templates/components/comments.php');

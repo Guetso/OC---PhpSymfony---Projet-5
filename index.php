@@ -1,5 +1,6 @@
 <?php
 require('config.php');
-require('templates/index.php');
 
+$pageTitle = 'Bienvenue sur mon blog';
 
+require('templates/pages/index.php');

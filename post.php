@@ -30,4 +30,4 @@ $postTitle = htmlspecialchars($titre) . ' le ' . htmlspecialchars($date) . ' à 
 $postContent = htmlspecialchars($contenu);
 $commentsPerPage = 5;
 
-require('./templates/post.php');
+require('./templates/pages/post.php');

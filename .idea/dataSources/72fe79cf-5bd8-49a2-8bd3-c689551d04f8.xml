@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="myblog@localhost">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.20">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.21">
     <root id="1">
       <ServerVersion>8.0.21</ServerVersion>
+      <Grants>myblog|schema||guetso|localhost|ALTER|G
+myblog|schema||guetso|localhost|ALTER ROUTINE|G
+myblog|schema||guetso|localhost|CREATE|G
+myblog|schema||guetso|localhost|CREATE ROUTINE|G
+myblog|schema||guetso|localhost|CREATE TEMPORARY TABLES|G
+myblog|schema||guetso|localhost|CREATE VIEW|G
+myblog|schema||guetso|localhost|DELETE|G
+myblog|schema||guetso|localhost|DROP|G
+myblog|schema||guetso|localhost|EVENT|G
+myblog|schema||guetso|localhost|EXECUTE|G
+myblog|schema||guetso|localhost|INDEX|G
+myblog|schema||guetso|localhost|INSERT|G
+myblog|schema||guetso|localhost|LOCK TABLES|G
+myblog|schema||guetso|localhost|REFERENCES|G
+myblog|schema||guetso|localhost|SELECT|G
+myblog|schema||guetso|localhost|SHOW VIEW|G
+myblog|schema||guetso|localhost|TRIGGER|G
+myblog|schema||guetso|localhost|UPDATE|G
+smashbookdb|schema||guetso|localhost|ALTER|G
+smashbookdb|schema||guetso|localhost|ALTER ROUTINE|G
+smashbookdb|schema||guetso|localhost|CREATE|G
+smashbookdb|schema||guetso|localhost|CREATE ROUTINE|G
+smashbookdb|schema||guetso|localhost|CREATE TEMPORARY TABLES|G
+smashbookdb|schema||guetso|localhost|CREATE VIEW|G
+smashbookdb|schema||guetso|localhost|DELETE|G
+smashbookdb|schema||guetso|localhost|DROP|G
+smashbookdb|schema||guetso|localhost|EVENT|G
+smashbookdb|schema||guetso|localhost|EXECUTE|G
+smashbookdb|schema||guetso|localhost|INDEX|G
+smashbookdb|schema||guetso|localhost|INSERT|G
+smashbookdb|schema||guetso|localhost|LOCK TABLES|G
+smashbookdb|schema||guetso|localhost|REFERENCES|G
+smashbookdb|schema||guetso|localhost|SELECT|G
+smashbookdb|schema||guetso|localhost|SHOW VIEW|G
+smashbookdb|schema||guetso|localhost|TRIGGER|G
+smashbookdb|schema||guetso|localhost|UPDATE|G</Grants>
       <DefaultEngine>MyISAM</DefaultEngine>
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <DefaultCasing>lower/lower</DefaultCasing>
@@ -11,6 +47,18 @@
       <Collation>utf8_general_ci</Collation>
     </schema>
     <schema id="3" parent="1" name="myblog">
+      <Grants>myblog|||guetso|localhost|ALTER|G
+myblog|||guetso|localhost|CREATE|G
+myblog|||guetso|localhost|CREATE VIEW|G
+myblog|||guetso|localhost|DELETE|G
+myblog|||guetso|localhost|DROP|G
+myblog|||guetso|localhost|INDEX|G
+myblog|||guetso|localhost|INSERT|G
+myblog|||guetso|localhost|REFERENCES|G
+myblog|||guetso|localhost|SELECT|G
+myblog|||guetso|localhost|SHOW VIEW|G
+myblog|||guetso|localhost|TRIGGER|G
+myblog|||guetso|localhost|UPDATE|G</Grants>
       <Current>1</Current>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
@@ -876,73 +924,142 @@
     </collation>
     <user id="277" parent="1" name="guetso">
       <Host>localhost</Host>
-      <ObjectGrants>ALL PRIVILEGES|myblog
-ALL PRIVILEGES|smashbookdb
-ALL PRIVILEGES|myblog.myblog
-ALL PRIVILEGES|mydb.myblog
-</ObjectGrants>
     </user>
-    <table id="278" parent="3" name="comments"/>
-    <table id="279" parent="3" name="posts"/>
-    <column id="280" parent="278" name="id">
+    <table id="278" parent="3" name="comments">
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="279" parent="3" name="members">
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="280" parent="3" name="posts">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="281" parent="278" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="281" parent="278" name="post_id">
+    <column id="282" parent="278" name="post_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="282" parent="278" name="author">
+    <column id="283" parent="278" name="author">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="283" parent="278" name="content">
+    <column id="284" parent="278" name="content">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="284" parent="278" name="created_at">
+    <column id="285" parent="278" name="created_at">
       <Position>5</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
-      <DefaultExpression>(CURRENT_TIMESTAMP)</DefaultExpression>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <index id="285" parent="278" name="fk_post_id">
+    <index id="286" parent="278" name="fk_post_id">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="286" parent="278" name="PRIMARY">
+    <key id="287" parent="278" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="287" parent="279" name="id">
+    <foreign-key id="288" parent="278" name="fk_post_id">
+      <ColNames>post_id</ColNames>
+      <RefTableName>posts</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="289" parent="279" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="288" parent="279" name="title">
+    <column id="290" parent="279" name="pseudo">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="289" parent="279" name="content">
+    <column id="291" parent="279" name="pass">
       <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="292" parent="279" name="email">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="293" parent="279" name="created_at">
+      <Position>5</Position>
+      <DataType>datetime|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="294" parent="279" name="modified_at">
+      <Position>6</Position>
+      <DataType>datetime|0s</DataType>
+    </column>
+    <index id="295" parent="279" name="pseudo">
+      <ColNames>pseudo</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="296" parent="279" name="email">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="297" parent="279" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="298" parent="279" name="pseudo">
+      <ColNames>pseudo</ColNames>
+      <UnderlyingIndexName>pseudo</UnderlyingIndexName>
+    </key>
+    <key id="299" parent="279" name="email">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>email</UnderlyingIndexName>
+    </key>
+    <column id="300" parent="280" name="id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="301" parent="280" name="title">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="302" parent="280" name="subtitle">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="303" parent="280" name="content">
+      <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="290" parent="279" name="created_at">
-      <Position>4</Position>
+    <column id="304" parent="280" name="created_at">
+      <Position>5</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
-      <DefaultExpression>(CURRENT_TIMESTAMP)</DefaultExpression>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <key id="291" parent="279" name="PRIMARY">
+    <column id="305" parent="280" name="modfied_at">
+      <Position>6</Position>
+      <DataType>datetime|0s</DataType>
+    </column>
+    <key id="306" parent="280" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
