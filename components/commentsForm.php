@@ -14,11 +14,11 @@ if (isset($_POST['controlSubmit'])) {
         $_POST['comment'] = htmlspecialchars($_POST['comment']);
         try {
             createPostComment($id_post, $_SESSION['pseudo'], $_POST['comment']);
+            header('Location: post.php?post='.$id_post);
         } catch
         (Exception $sqlError) {
             $sqlErrorMessages = $sqlError->getMessage();
             $errorMessages['generic']['sqlError'] = $sqlErrorMessages;
-
         }
     }
 }
