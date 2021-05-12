@@ -48,11 +48,11 @@ function getPostComments($id_post, $commentsPerPage, $offset)
 {
     $bdd = dbConnect();
     $stmt = $bdd->prepare(
-        'SELECT post_id, author, content,
-   DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date,
-   DATE_FORMAT(created_at, \'%Hh%imin%ss\') AS time
-   FROM comments
-   WHERE post_id = ?
+        'SELECT comments.post_id, members.pseudo AS author , comments.content,
+   DATE_FORMAT(comments.created_at, \'%d/%m/%Y\') AS date,
+   DATE_FORMAT(comments.created_at, \'%Hh%imin%ss\') AS time
+   FROM comments INNER JOIN members ON comments.author = members.id
+   WHERE post_id = ? ORDER BY comments.created_at DESC
    LIMIT ? OFFSET ?'
     );
     $stmt->bindParam(1, $id_post, PDO::PARAM_INT);
@@ -116,7 +116,7 @@ function login($pseudo, $pass)
             )
         );
         $response = $stmt->fetch();
-        $isPassCorrect = password_verify($pass, $response['pass']?? '');
+        $isPassCorrect = password_verify($pass, $response['pass'] ?? '');
         $passError = 'Mauvais identifiant ou mot de passe !';
         if (!$response) {
             throw new Exception($passError);
@@ -129,6 +129,28 @@ function login($pseudo, $pass)
         }
     } catch (Exception $e) {
         throw $e;
+    } finally {
+        $stmt->closeCursor();
+    }
+}
+
+/**
+ * @param $postId
+ * @param $author
+ * @param $comment
+ */
+function createPostComment($postId, $author, $comment)
+{
+    $bdd = dbConnect();
+    $stmt = $bdd->prepare('INSERT INTO comments (post_id, author, content) VALUES(:post_id, :author, :content)');
+    try {
+        $stmt->execute(array(
+                'post_id' => $postId,
+                'author' => $author,
+                'content' => $comment)
+        );
+    } catch (PDOException  $sqlError) {
+        throw $sqlError;
     } finally {
         $stmt->closeCursor();
     }
