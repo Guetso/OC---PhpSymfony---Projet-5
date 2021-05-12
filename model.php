@@ -1,6 +1,9 @@
 <?php
 require('./utils/pdo.php');
 
+/**
+ * @return array
+ */
 function getPosts()
 {
     $bdd = dbConnect();
@@ -14,6 +17,10 @@ function getPosts()
     return $req;
 }
 
+/**
+ * @param $id
+ * @return mixed
+ */
 function getOnePost($id)
 {
     $bdd = dbConnect();
@@ -31,6 +38,12 @@ function getOnePost($id)
     return $req;
 }
 
+/**
+ * @param $id_post
+ * @param $commentsPerPage
+ * @param $offset
+ * @return array
+ */
 function getPostComments($id_post, $commentsPerPage, $offset)
 {
     $bdd = dbConnect();
@@ -51,6 +64,10 @@ function getPostComments($id_post, $commentsPerPage, $offset)
     return $req;
 }
 
+/**
+ * @param $id_post
+ * @return mixed
+ */
 function getCommentsNb($id_post)
 {
     $bdd = dbConnect();
@@ -61,6 +78,11 @@ function getCommentsNb($id_post)
     return $req;
 }
 
+/**
+ * @param $pseudo
+ * @param $pass_hache
+ * @param $email
+ */
 function signup($pseudo, $pass_hache, $email)
 {
     $bdd = dbConnect();
@@ -73,6 +95,40 @@ function signup($pseudo, $pass_hache, $email)
         );
     } catch (PDOException  $sqlError) {
         throw $sqlError;
+    } finally {
+        $stmt->closeCursor();
+    }
+}
+
+/**
+ * @param $pseudo
+ * @param $pass
+ * @return mixed
+ * @throws Exception
+ */
+function login($pseudo, $pass)
+{
+    $bdd = dbConnect();
+    $stmt = $bdd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');
+    try {
+        $stmt->execute(array(
+                'pseudo' => $pseudo
+            )
+        );
+        $response = $stmt->fetch();
+        $isPassCorrect = password_verify($pass, $response['pass']?? '');
+        $passError = 'Mauvais identifiant ou mot de passe !';
+        if (!$response) {
+            throw new Exception($passError);
+        } else {
+            if ($isPassCorrect) {
+                return $response;
+            } else {
+                throw new Exception($passError);
+            }
+        }
+    } catch (Exception $e) {
+        throw $e;
     } finally {
         $stmt->closeCursor();
     }

@@ -27,7 +27,7 @@
             echo $errorMessage . '<br>';
         } ?>
     </span>
-    <br>
+    <br/>
     <div>
         <span>Un mot de passe valide aura:</span>
         <ul>

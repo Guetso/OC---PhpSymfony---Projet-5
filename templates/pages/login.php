@@ -9,10 +9,15 @@
     <br/>
     <label for="password">Mot de passe: </label>
     <input id="password" type="password" name="password">
-    <span class="error"><?= $errorMessages['passError'] ?? '' ?></span>
     <br/>
     <input type="submit" value="Se connecter">
 </form>
+<br/>
+<span class="error">
+        <?php foreach ($errorMessages['generic'] as $errorMessage) {
+            echo $errorMessage . '<br>';
+        } ?>
+</span>
 <?php $content = ob_get_clean(); ?>
 
 <?php require('templates/template.php'); ?>

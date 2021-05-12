@@ -38,11 +38,17 @@ if (isset($_POST['controlSubmit'])) {
         $pass_hache = password_hash($_POST['password'], PASSWORD_DEFAULT);
         try {
             signup($_POST['pseudo'], $pass_hache, $_POST['email']);
+            try {
+                login($_POST['pseudo'], $_POST['password']);
+                header('Location: index.php');
+            } catch (Exception $e) {
+                $errorMessages['generic']['confirmError'] = $e->getMessage();
+            }
             header('Location: index.php');
         } catch (Exception $sqlError) {
             $sqlErrorMessages = $sqlError->getMessage();
             if (str_contains($sqlErrorMessages, 'members.pseudo')) {
-            $errorMessages['generic']['sqlError'] = 'Ce pseudo est déjà pris !';
+                $errorMessages['generic']['sqlError'] = 'Ce pseudo est déjà pris !';
             }
             if (str_contains($sqlErrorMessages, 'members.email')) {
                 $errorMessages['generic']['sqlError'] = 'Cet email est déjà pris !';
