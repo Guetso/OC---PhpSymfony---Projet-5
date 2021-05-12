@@ -133,3 +133,20 @@ function login($pseudo, $pass)
         $stmt->closeCursor();
     }
 }
+
+function createPostComment($postId, $author, $comment)
+{
+    $bdd = dbConnect();
+    $stmt = $bdd->prepare('INSERT INTO comments (post_id, author, content) VALUES(:post_id, :author, :content)');
+    try {
+        $stmt->execute(array(
+                'post_id' => $postId,
+                'author' => $author,
+                'content' => $comment)
+        );
+    } catch (PDOException  $sqlError) {
+        throw $sqlError;
+    } finally {
+        $stmt->closeCursor();
+    }
+}
