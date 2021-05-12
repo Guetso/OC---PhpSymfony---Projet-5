@@ -4,7 +4,7 @@
 <br/>
 
 <?php
-if (isset($_SESSION['id'])) {
+if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
     echo ' <a href="login.php?logout">Se déconnecter</a>';
 } else {
     echo ' <a href="login.php">Se connecter</a><br/>';

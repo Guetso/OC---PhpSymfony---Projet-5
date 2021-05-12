@@ -18,6 +18,7 @@ if (isset($_POST['controlSubmit'])) {
         $_POST['password'] = htmlspecialchars($_POST['password']);
         try {
             $login = login($_POST['pseudo'], $_POST['password']);
+            $_SESSION['connected'] = true;
             $_SESSION['id'] = $login['id'];
             $_SESSION['pseudo'] = $login['pseudo'];
             header('Location: index.php');
