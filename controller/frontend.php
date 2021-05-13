@@ -1,5 +1,5 @@
 <?php
-require('model/model.php');
+require('model/frontend.php');
 
 function welcomePage()
 {
