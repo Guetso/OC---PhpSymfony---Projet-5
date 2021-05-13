@@ -106,7 +106,7 @@ function signup($pseudo, $pass_hache, $email)
  * @return mixed
  * @throws Exception
  */
-function login($pseudo, $pass)
+function getLogin($pseudo, $pass)
 {
     $bdd = dbConnect();
     $stmt = $bdd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');

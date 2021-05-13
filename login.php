@@ -17,10 +17,8 @@ if (isset($_POST['controlSubmit'])) {
         $_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
         $_POST['password'] = htmlspecialchars($_POST['password']);
         try {
-            $login = login($_POST['pseudo'], $_POST['password']);
-            $_SESSION['connected'] = true;
-            $_SESSION['id'] = $login['id'];
-            $_SESSION['pseudo'] = $login['pseudo'];
+            $getLogin = getLogin($_POST['pseudo'], $_POST['password']);
+            login( $getLogin['id'], $getLogin['pseudo']);
             header('Location: index.php');
         } catch (Exception $e) {
             $errorMessages['generic']['confirmError'] = $e->getMessage();

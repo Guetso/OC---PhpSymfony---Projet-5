@@ -39,12 +39,12 @@ if (isset($_POST['controlSubmit'])) {
         try {
             signup($_POST['pseudo'], $pass_hache, $_POST['email']);
             try {
-                login($_POST['pseudo'], $_POST['password']);
+                $getLogin = getLogin($_POST['pseudo'], $_POST['password']);
+                login( $getLogin['id'], $getLogin['pseudo']);
                 header('Location: index.php');
             } catch (Exception $e) {
                 $errorMessages['generic']['confirmError'] = $e->getMessage();
             }
-            header('Location: index.php');
         } catch (Exception $sqlError) {
             $sqlErrorMessages = $sqlError->getMessage();
             if (str_contains($sqlErrorMessages, 'members.pseudo')) {
