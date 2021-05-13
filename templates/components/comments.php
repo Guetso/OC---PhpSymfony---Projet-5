@@ -2,10 +2,6 @@
     <h2>Commentaires</h2>
 
     <?php
-    if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
-        include './components/commentsForm.php';
-    }
-
     foreach ($comments as $comment) {
         $commentAuthor = htmlspecialchars($comment['author']);
         $commentDate = ' le ' . htmlspecialchars($comment['date']) . ' à ' . htmlspecialchars($comment['time']);
