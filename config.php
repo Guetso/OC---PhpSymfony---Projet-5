@@ -20,4 +20,4 @@ function logout()
     session_destroy();
 }
 
-$style = './style.css';
+$style = './public/style.css';

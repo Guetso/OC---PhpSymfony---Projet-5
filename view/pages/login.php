@@ -24,4 +24,4 @@ ob_start();
 </span>
 <?php $content = ob_get_clean(); ?>
 
-<?php require('templates/template.php'); ?>
+<?php require('view/template.php'); ?>

@@ -1,5 +1,5 @@
 <?php
-require('controller.php');
+require('controller/controller.php');
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'welcome') {
@@ -18,7 +18,7 @@ if (isset($_GET['action'])) {
         if (!isset($_GET['post'])) {
             $errorTitle = 'Erreur';
             $errorMessage = 'Erreur dans la requête !';
-            require 'error.php';
+            require 'utils/error.php';
             die;
         } else {
             $_GET['post'] = (int)$_GET['post'];

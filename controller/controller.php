@@ -1,10 +1,10 @@
 <?php
-require('model.php');
+require('model/model.php');
 
 function welcomePage()
 {
     require('config.php');
-    require('templates/pages/welcome.php');
+    require('view/pages/welcome.php');
 }
 
 function signupPage()
@@ -63,7 +63,7 @@ function signupPage()
             }
         }
     }
-    require('templates/pages/signup.php');
+    require('view/pages/signup.php');
 }
 
 function loginPage()
@@ -96,14 +96,14 @@ function loginPage()
         logout();
         header('Location: ?action=welcome');
     }
-    require('templates/pages/login.php');
+    require('view/pages/login.php');
 }
 
 function listPostsPage()
 {
     require('config.php');
     $posts = getPosts();
-    require('templates/pages/posts.php');
+    require('view/pages/posts.php');
 }
 
 function postPage()
@@ -114,7 +114,7 @@ function postPage()
     if (!$post) {
         $errorTitle = 'Pas de billet';
         $errorMessage = 'Ce billet n\'existe pas';
-        require 'error.php';
+        require 'utils/error.php';
         die;
     }
 
@@ -128,6 +128,6 @@ function postPage()
     $postContent = htmlspecialchars($contenu);
     $commentsPerPage = 5;
 
-    require('./templates/pages/post.php');
+    require('./view/pages/post.php');
     require './components/comments.php';
 }

@@ -21,7 +21,7 @@ $pageCommentNb = ceil($comments_nb / $commentsPerPage);
 if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
     $errorTitle = 'Erreur';
     $errorMessage = 'Cette page n\'existe pas !';
-    require './error.php';
+    require 'utils/error.php';
     die;
 }
 
@@ -29,4 +29,4 @@ if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
     require './components/commentsForm.php';
 }
 
-require('templates/components/comments.php');
+require('view/components/comments.php');

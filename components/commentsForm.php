@@ -25,4 +25,4 @@ if (isset($_POST['controlSubmit'])) {
     }
 }
 
-require('./templates/components/commentsForm.php');
+require('./view/components/commentsForm.php');

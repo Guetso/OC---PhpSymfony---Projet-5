@@ -17,4 +17,4 @@ if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
 ?>
 <?php $content = ob_get_clean(); ?>
 
-<?php require('templates/template.php'); ?>
+<?php require('view/template.php'); ?>
