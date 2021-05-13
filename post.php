@@ -5,7 +5,7 @@ require('model.php');
 if (!isset($_GET['post'])) {
     $errorTitle = 'Erreur';
     $errorMessage = 'Erreur dans la requête !';
-    include 'error.php';
+    require 'error.php';
     die;
 } else {
     $_GET['post'] = (int) $_GET['post'];
@@ -16,7 +16,7 @@ $post = getOnePost($_GET['post']);
 if (!$post) {
     $errorTitle = 'Pas de billet';
     $errorMessage = 'Ce billet n\'existe pas';
-    include 'error.php';
+    require 'error.php';
     die;
 }
 

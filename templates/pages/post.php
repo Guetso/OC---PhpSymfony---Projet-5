@@ -12,7 +12,7 @@
     </p>
 </article>
 
-<?php include './components/comments.php' ?>
+<?php require './components/comments.php' ?>
 <?php $content = ob_get_clean(); ?>
 
 <?php require('templates/template.php'); ?>
