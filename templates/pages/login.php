@@ -1,4 +1,8 @@
-<?php ob_start(); ?>
+<?php
+$pageTitle = 'Connexion';
+ob_start();
+?>
+
 <h1><?= $pageTitle ?></h1>
 
 <form method="post">

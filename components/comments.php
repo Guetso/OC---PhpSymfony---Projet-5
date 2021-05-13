@@ -1,4 +1,8 @@
 <?php
+
+/** @var integer $commentsPerPage */
+/** @var integer $id_post */
+
 if (isset($_GET['page']) && !empty($_GET['page'])) {
     $pageNbr = (int)($_GET['page']);
 } else {

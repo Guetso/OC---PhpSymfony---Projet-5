@@ -1,3 +1,8 @@
+<?php
+/** @var integer $id_post */
+ob_start();
+?>
+
 <aside>
     <h2>Commentaires</h2>
 
@@ -17,7 +22,7 @@
     <ul>
         <?php
         for ($i = 1; $i <= $pageCommentNb; $i++) {
-            $link = './post.php?post=' . htmlspecialchars($id_post) . '&page=' . htmlspecialchars($i);
+            $link = '?action=post&post=' . htmlspecialchars($id_post) . '&page=' . htmlspecialchars($i);
             echo '<li>' . '<a href="' . $link . '">' . $i . '</a>' . '</li>';
         }
         ?>

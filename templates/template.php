@@ -1,3 +1,5 @@
+<?php /** @var string $pageTitle */ ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

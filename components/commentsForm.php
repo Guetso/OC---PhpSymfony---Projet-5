@@ -1,5 +1,7 @@
 <?php
 
+/** @var integer $id_post */
+
 $errorMessages = [
     'generic' => [],
 ];
@@ -14,7 +16,7 @@ if (isset($_POST['controlSubmit'])) {
         $_POST['comment'] = htmlspecialchars($_POST['comment']);
         try {
             createPostComment($id_post, $_SESSION['id'], $_POST['comment']);
-            header('Location: post.php?post='.$id_post);
+            header('Location: ?action=post&post='.$id_post);
         } catch
         (Exception $sqlError) {
             $sqlErrorMessages = $sqlError->getMessage();
