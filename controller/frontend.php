@@ -1,5 +1,10 @@
 <?php
-require('model/frontend.php');
+
+use Hugo\Blog\Model\AuthManager;
+use Hugo\Blog\Model\PostManager;
+
+require_once ('model/PostManager.php');
+require_once ('model/AuthManager.php');
 
 function welcomePage()
 {
@@ -44,9 +49,10 @@ function signupPage()
 
             $pass_hache = password_hash($_POST['password'], PASSWORD_DEFAULT);
             try {
-                signup($_POST['pseudo'], $pass_hache, $_POST['email']);
+                $authManager = new AuthManager();
+                $authManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                 try {
-                    $getLogin = getLogin($_POST['pseudo'], $_POST['password']);
+                    $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
                     login($getLogin['id'], $getLogin['pseudo']);
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
@@ -83,7 +89,8 @@ function loginPage()
             $_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
             $_POST['password'] = htmlspecialchars($_POST['password']);
             try {
-                $getLogin = getLogin($_POST['pseudo'], $_POST['password']);
+                $authManager = new AuthManager();
+                $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
                 login($getLogin['id'], $getLogin['pseudo']);
                 header('Location: ?action=welcome');
             } catch (Exception $e) {
@@ -102,14 +109,17 @@ function loginPage()
 function listPostsPage()
 {
     require('config.php');
-    $posts = getPosts();
+    $postManager = new PostManager();
+    $posts = $postManager->getPosts();
+
     require('view/pages/posts.php');
 }
 
 function postPage()
 {
     require('config.php');
-    $post = getOnePost($_GET['post']);
+    $postManager = new PostManager();
+    $post = $postManager->getOnePost($_GET['post']);
 
     if (!$post) {
         $errorTitle = 'Pas de billet';

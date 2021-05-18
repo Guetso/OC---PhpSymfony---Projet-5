@@ -1,5 +1,9 @@
 <?php
 
+use Hugo\Blog\Model\CommentManager;
+
+require_once ('model/CommentManager.php');
+
 /** @var integer $id_post */
 
 $errorMessages = [
@@ -15,7 +19,8 @@ if (isset($_POST['controlSubmit'])) {
     if ($validForm === true) {
         $_POST['comment'] = htmlspecialchars($_POST['comment']);
         try {
-            createPostComment($id_post, $_SESSION['id'], $_POST['comment']);
+            $commentManager = new CommentManager();
+            $commentManager->createPostComment($id_post, $_SESSION['id'], $_POST['comment']);
             header('Location: ?action=post&post='.$id_post);
         } catch
         (Exception $sqlError) {
