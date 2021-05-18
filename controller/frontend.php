@@ -8,13 +8,11 @@ require_once ('model/AuthManager.php');
 
 function welcomePage()
 {
-    require('config.php');
     require('view/pages/welcome.php');
 }
 
 function signupPage()
 {
-    require('config.php');
     $errorMessages = [
         'generic' => [],
     ];
@@ -74,7 +72,6 @@ function signupPage()
 
 function loginPage()
 {
-    require('config.php');
     $errorMessages = [
         'generic' => [],
     ];
@@ -108,7 +105,6 @@ function loginPage()
 
 function listPostsPage()
 {
-    require('config.php');
     $postManager = new PostManager();
     $posts = $postManager->getPosts();
 
@@ -117,7 +113,6 @@ function listPostsPage()
 
 function postPage()
 {
-    require('config.php');
     $postManager = new PostManager();
     $post = $postManager->getOnePost($_GET['post']);
 

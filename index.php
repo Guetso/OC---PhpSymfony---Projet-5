@@ -1,4 +1,5 @@
 <?php
+require_once('config.php');
 require('controller/frontend.php');
 
 try {
