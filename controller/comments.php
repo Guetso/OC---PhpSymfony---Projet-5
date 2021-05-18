@@ -29,7 +29,7 @@ if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
 }
 
 if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
-    require './components/commentsForm.php';
+    require './controller/commentsForm.php';
 }
 
 require('view/components/comments.php');

@@ -139,5 +139,5 @@ function postPage()
     $commentsPerPage = 5;
 
     require('./view/pages/post.php');
-    require './components/comments.php';
+    require './controller/comments.php';
 }

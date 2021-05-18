@@ -2,7 +2,7 @@
 
 use Hugo\Blog\Model\CommentManager;
 
-require_once ('model/CommentManager.php');
+require_once('model/CommentManager.php');
 
 /** @var integer $id_post */
 
