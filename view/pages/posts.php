@@ -20,13 +20,14 @@ ob_start();
             $postTitle = htmlspecialchars($post['title']) .
                 ' le ' . htmlspecialchars($post['date']) .
                 ' à ' . htmlspecialchars($post['time']);
-            $postContent = htmlspecialchars($post['content']);
+            $postChapo = htmlspecialchars($post['subtitle']);
+            $postAuthor = $post['author'] ? htmlspecialchars($post['author']) : 'utilisateur inconnu';
             $postLink = '?action=post&post=' . htmlspecialchars($post['id']); ?>
             <article>
-                <h3><?= $postTitle ?></h3>
-                <p><?= $postContent ?>
+                <h3><?= $postTitle ?> par <?= $postAuthor ?></h3>
+                <p><?= $postChapo ?>
                     <br/>
-                    <a href="<?= $postLink ?>">Commentaires</a>
+                    <a href="<?= $postLink ?>">Voir plus...</a>
                 </p>
             </article>
             <?php
