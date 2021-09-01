@@ -2,6 +2,7 @@
 /** @var string $postTitle */
 /** @var string $postContent */
 /** @var string $postChapo */
+/** @var string $postAuthor */
 
 $pageTitle = $postTitle;
 ob_start();
@@ -16,6 +17,8 @@ ob_start();
 
     <p>
         <?= $postContent ?>
+        <br/>
+        <strong><?= $postAuthor ?></strong>
     </p>
 </article>
 
