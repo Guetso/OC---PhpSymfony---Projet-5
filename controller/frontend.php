@@ -3,8 +3,8 @@
 use Hugo\Blog\Model\AuthManager;
 use Hugo\Blog\Model\PostManager;
 
-require_once ('model/PostManager.php');
-require_once ('model/AuthManager.php');
+require_once('model/PostManager.php');
+require_once('model/AuthManager.php');
 
 function welcomePage()
 {
@@ -23,26 +23,27 @@ function signupPage()
             || empty($_POST['email'])
             || empty($_POST['password'])
             || empty($_POST['passwordConfirm'])) {
-            $validForm = false;
+            $validForm                         = false;
             $errorMessages['generic']['empty'] = 'Il faut renseigner tous les champs !';
         }
         if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $_POST['email'])) {
-            $validForm = false;
+            $validForm                   = false;
             $errorMessages['emailError'] = 'L\'adresse email n\'est pas valide !';
         }
-        if (!preg_match("#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$#",
+        if (!preg_match(
+            "#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$#",
             $_POST['password'])) {
-            $validForm = false;
+            $validForm                  = false;
             $errorMessages['passError'] = 'Le mot de passe n\'est pas valide !';
         }
         if ($_POST['password'] !== $_POST['passwordConfirm']) {
-            $validForm = false;
+            $validForm                     = false;
             $errorMessages['confirmError'] = 'La confirmation du mot de passe a échouée !';
         }
         if ($validForm === true) {
-            $_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
-            $_POST['email'] = htmlspecialchars($_POST['email']);
-            $_POST['password'] = htmlspecialchars($_POST['password']);
+            $_POST['pseudo']          = htmlspecialchars($_POST['pseudo']);
+            $_POST['email']           = htmlspecialchars($_POST['email']);
+            $_POST['password']        = htmlspecialchars($_POST['password']);
             $_POST['passwordConfirm'] = htmlspecialchars($_POST['passwordConfirm']);
 
             $pass_hache = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -79,15 +80,15 @@ function loginPage()
     if (isset($_POST['controlSubmit'])) {
         $validForm = true;
         if (empty($_POST['pseudo']) || empty($_POST['password'])) {
-            $validForm = false;
+            $validForm                         = false;
             $errorMessages['generic']['empty'] = 'Il faut renseigner tous les champs !';
         }
         if ($validForm === true) {
-            $_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
+            $_POST['pseudo']   = htmlspecialchars($_POST['pseudo']);
             $_POST['password'] = htmlspecialchars($_POST['password']);
             try {
                 $authManager = new AuthManager();
-                $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
+                $getLogin    = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
                 login($getLogin['id'], $getLogin['pseudo']);
                 header('Location: ?action=welcome');
             } catch (Exception $e) {
@@ -106,7 +107,7 @@ function loginPage()
 function listPostsPage()
 {
     $postManager = new PostManager();
-    $posts = $postManager->getPosts();
+    $posts       = $postManager->getPosts();
 
     require('view/pages/posts.php');
 }
@@ -114,23 +115,23 @@ function listPostsPage()
 function postPage()
 {
     $postManager = new PostManager();
-    $post = $postManager->getOnePost($_GET['post']);
+    $post        = $postManager->getOnePost($_GET['post']);
 
     if (!$post) {
-        $errorTitle = 'Pas de billet';
+        $errorTitle   = 'Pas de billet';
         $errorMessage = 'Ce billet n\'existe pas';
         require 'utils/error.php';
         die;
     }
 
-    $id_post = $post['id'];
-    $date = $post['date'];
-    $time = $post['time'];
-    $postDateTime = htmlspecialchars($date) . htmlspecialchars($time);
-    $postAuthor = $post['author'];
-    $postTitle = htmlspecialchars($post['title']);
-    $postChapo = htmlspecialchars($post['subtitle']);
-    $postContent = htmlspecialchars($post['content']);
+    $id_post         = $post['id'];
+    $updatedDate     = htmlspecialchars($post['updatedDate']);
+    $updatedTime     = htmlspecialchars($post['updatedTime']);
+    $updatedDateTime = 'le ' . $updatedDate . 'à ' . $updatedTime;
+    $postAuthor      = htmlspecialchars($post['author']);
+    $postTitle       = htmlspecialchars($post['title']);
+    $postChapo       = htmlspecialchars($post['subtitle']);
+    $postContent     = htmlspecialchars($post['content']);
     $commentsPerPage = 5;
 
     require('./view/pages/post.php');

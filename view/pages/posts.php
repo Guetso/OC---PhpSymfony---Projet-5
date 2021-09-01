@@ -17,14 +17,14 @@ ob_start();
 
         <?php
         foreach ($posts as $post) {
-            $postTitle = htmlspecialchars($post['title']) .
-                ' le ' . htmlspecialchars($post['date']) .
-                ' à ' . htmlspecialchars($post['time']);
+            $postDetails = htmlspecialchars($post['title']) .
+                ' le ' . htmlspecialchars($post['updatedDate']) .
+                ' à ' . htmlspecialchars($post['updatedTime']);
             $postChapo = htmlspecialchars($post['subtitle']);
             $postAuthor = $post['author'] ? htmlspecialchars($post['author']) : 'utilisateur inconnu';
             $postLink = '?action=post&post=' . htmlspecialchars($post['id']); ?>
             <article>
-                <h3><?= $postTitle ?> par <?= $postAuthor ?></h3>
+                <h3><?= $postDetails ?> par <?= $postAuthor ?></h3>
                 <p><?= $postChapo ?>
                     <br/>
                     <a href="<?= $postLink ?>">Voir plus...</a>
