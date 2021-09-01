@@ -124,13 +124,13 @@ function postPage()
     }
 
     $id_post = $post['id'];
-    $titre = $post['title'];
-    $contenu = $post['content'];
     $date = $post['date'];
     $time = $post['time'];
-    $pageTitle = htmlspecialchars($titre);
-    $postTitle = htmlspecialchars($titre) . ' le ' . htmlspecialchars($date) . ' à ' . htmlspecialchars($time);
-    $postContent = htmlspecialchars($contenu);
+    $postDateTime = htmlspecialchars($date) . htmlspecialchars($time);
+    $postAuthor = $post['author'];
+    $postTitle = htmlspecialchars($post['title']);
+    $postChapo = htmlspecialchars($post['subtitle']);
+    $postContent = htmlspecialchars($post['content']);
     $commentsPerPage = 5;
 
     require('./view/pages/post.php');

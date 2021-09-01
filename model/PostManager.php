@@ -1,4 +1,5 @@
 <?php
+
 namespace Hugo\Blog\Model;
 require_once('model/Manager.php');
 
@@ -6,10 +7,10 @@ class PostManager extends Manager
 {
     public function getPosts()
     {
-        $db = $this->dbConnect();
-        $stmt = $db->query(
-            'SELECT id, title, content, DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date,
-            DATE_FORMAT(created_at, \'%Hh%imin%ss\') AS time
+        $db    = $this->dbConnect();
+        $stmt  = $db->query(
+            'SELECT id, author, title, subtitle, content, DATE_FORMAT(modified_at, \'%d/%m/%Y\') AS date,
+            DATE_FORMAT(modified_at, \'%Hh%imin%ss\') AS time
             FROM posts ORDER BY created_at DESC LIMIT 0, 10');
         $posts = $stmt->fetchAll();
         $stmt->closeCursor();
@@ -19,9 +20,9 @@ class PostManager extends Manager
 
     function getOnePost($id)
     {
-        $db = $this->dbConnect();
+        $db   = $this->dbConnect();
         $stmt = $db->prepare(
-            'SELECT id, title, content, 
+            'SELECT id,author, title, subtitle, content, 
             DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date,
             DATE_FORMAT(created_at, \'%Hh%imin%ss\') AS time 
             FROM posts 

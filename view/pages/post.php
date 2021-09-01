@@ -1,14 +1,17 @@
 <?php
 /** @var string $postTitle */
 /** @var string $postContent */
+/** @var string $postChapo */
+
+$pageTitle = $postTitle;
 ob_start();
 ?>
 <article class="news">
-    <h1>Mon super blog !</h1>
+    <h1><?= $postTitle ?></h1>
     <a href="?action=posts">Retour à la liste des billets</a>
 
     <h3>
-        <?= $postTitle ?>
+        <?= $postChapo ?>
     </h3>
 
     <p>
