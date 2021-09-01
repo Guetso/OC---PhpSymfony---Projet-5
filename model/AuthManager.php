@@ -7,6 +7,7 @@ require_once('model/Manager.php');
 
 class AuthManager extends Manager
 {
+    private const ERRORLOGIN = 'Mauvais identifiant ou mot de passe !';
     public function signup($pseudo, $pass_hache, $email)
     {
         $bd = $this->dbConnect();
@@ -35,14 +36,13 @@ class AuthManager extends Manager
             );
             $response = $stmt->fetch();
             $isPassCorrect = password_verify($pass, $response['pass'] ?? '');
-            $messageError = 'Mauvais identifiant ou mot de passe !';
             if (!$response) {
-                throw new Exception($messageError);
+                throw new Exception(self::ERRORLOGIN);
             } else {
                 if ($isPassCorrect) {
                     return $response;
                 } else {
-                    throw new Exception($messageError);
+                    throw new Exception(self::ERRORLOGIN);
                 }
             }
         } catch (Exception $e) {
