@@ -9,9 +9,11 @@ class PostManager extends Manager
     {
         $db    = $this->dbConnect();
         $stmt  = $db->query(
-            'SELECT id, author, title, subtitle, content, DATE_FORMAT(modified_at, \'%d/%m/%Y\') AS date,
-            DATE_FORMAT(modified_at, \'%Hh%imin%ss\') AS time
-            FROM posts ORDER BY created_at DESC LIMIT 0, 10');
+            'SELECT posts.id, members.pseudo AS author, posts.title, posts.subtitle, posts.content, 
+            DATE_FORMAT(posts.modified_at, \'%d/%m/%Y\') AS date,
+            DATE_FORMAT(posts.modified_at, \'%Hh%imin%ss\') AS time
+            FROM posts INNER JOIN members ON posts.author = members.id 
+            ORDER BY posts.created_at DESC LIMIT 0, 10');
         $posts = $stmt->fetchAll();
         $stmt->closeCursor();
 
@@ -22,11 +24,11 @@ class PostManager extends Manager
     {
         $db   = $this->dbConnect();
         $stmt = $db->prepare(
-            'SELECT id,author, title, subtitle, content, 
-            DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date,
-            DATE_FORMAT(created_at, \'%Hh%imin%ss\') AS time 
-            FROM posts 
-            WHERE id = ?');
+            'SELECT posts.id,members.pseudo AS author, posts.title, posts.subtitle, posts.content, 
+            DATE_FORMAT(posts.created_at, \'%d/%m/%Y\') AS date,
+            DATE_FORMAT(posts.created_at, \'%Hh%imin%ss\') AS time 
+            FROM posts INNER JOIN members ON posts.author = members.id
+            WHERE posts.id = ?');
         $stmt->execute(array($id));
         $post = $stmt->fetch();
         $stmt->closeCursor();
