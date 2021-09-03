@@ -1,10 +1,10 @@
 <?php
-namespace Hugo\Blog\Model;
+namespace Blog\Manager;
 
 use PDO;
 
 class Manager {
-    protected function dbConnect()
+    protected function dbConnect(): PDO
     {
         return new PDO(
             $_ENV['DB_CONNECTION'],

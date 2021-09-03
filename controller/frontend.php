@@ -1,10 +1,7 @@
 <?php
 
-use Hugo\Blog\Model\AuthManager;
-use Hugo\Blog\Model\PostManager;
-
-require_once('model/PostManager.php');
-require_once('model/AuthManager.php');
+use Blog\Manager\AuthManager;
+use Blog\Manager\PostManager;
 
 function welcomePage()
 {

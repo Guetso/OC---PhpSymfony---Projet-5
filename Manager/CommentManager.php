@@ -1,9 +1,9 @@
 <?php
-namespace Hugo\Blog\Model;
+namespace Blog\Manager;
 use PDO;
 use PDOException;
 
-require_once('model/Manager.php');
+require_once('Manager/Manager.php');
 
 class CommentManager extends Manager
 {

@@ -1,6 +1,9 @@
 <?php
-require_once('utils/config.php');
+
+use Blog\Controller\LoginController;
+
 require('controller/frontend.php');
+require_once('utils/config.php');
 
 try {
     if (isset($_GET['action'])) {
@@ -9,7 +12,8 @@ try {
         } elseif ($_GET['action'] == 'signup') {
             signupPage();
         } elseif ($_GET['action'] == 'login') {
-            loginPage();
+            $loginController = new LoginController();
+            $loginController->loginAction();
         } elseif ($_GET['action'] == 'posts') {
             listPostsPage();
         } elseif ($_GET['action'] == 'post') {

@@ -1,4 +1,6 @@
 <?php
+/** @var array $loginErrors */
+
 $pageTitle = 'Connexion';
 ob_start();
 ?>
@@ -18,7 +20,8 @@ ob_start();
 </form>
 <br/>
 <span class="error">
-        <?php foreach ($errorMessages['generic'] as $errorMessage) {
+    <?php
+        foreach ($loginErrors as $errorMessage) {
             echo $errorMessage . '<br>';
         } ?>
 </span>

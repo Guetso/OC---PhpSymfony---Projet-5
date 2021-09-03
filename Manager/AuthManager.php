@@ -1,13 +1,16 @@
 <?php
-namespace Hugo\Blog\Model;
+
+namespace Blog\Manager;
+
 use Exception;
 use PDOException;
 
-require_once('model/Manager.php');
+require_once('Manager/Manager.php');
 
 class AuthManager extends Manager
 {
-    private const ERRORLOGIN = 'Mauvais identifiant ou mot de passe !';
+    private const ERROR_LOGIN = 'Mauvais identifiant ou mot de passe !';
+
     public function signup($pseudo, $pass_hache, $email)
     {
         $bd = $this->dbConnect();
@@ -37,12 +40,12 @@ class AuthManager extends Manager
             $response = $stmt->fetch();
             $isPassCorrect = password_verify($pass, $response['pass'] ?? '');
             if (!$response) {
-                throw new Exception(self::ERRORLOGIN);
+                throw new Exception(self::ERROR_LOGIN);
             } else {
                 if ($isPassCorrect) {
                     return $response;
                 } else {
-                    throw new Exception(self::ERRORLOGIN);
+                    throw new Exception(self::ERROR_LOGIN);
                 }
             }
         } catch (Exception $e) {

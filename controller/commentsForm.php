@@ -1,8 +1,8 @@
 <?php
 
-use Hugo\Blog\Model\CommentManager;
+use Blog\Manager\CommentManager;
 
-require_once('model/CommentManager.php');
+require_once('Manager/CommentManager.php');
 
 /** @var integer $id_post */
 

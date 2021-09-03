@@ -1,7 +1,7 @@
 <?php
 
-namespace Hugo\Blog\Model;
-require_once('model/Manager.php');
+namespace Blog\Manager;
+require_once('Manager/Manager.php');
 
 class PostManager extends Manager
 {
