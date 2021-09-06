@@ -1,19 +1,27 @@
 <?php
 
 use Blog\Controller\LoginController;
+use Blog\Controller\HomeController;
+use Blog\Controller\SignupController;
+use Blog\Controller\LogoutController;
 
-require('controller/frontend.php');
+require('Controller/frontend.php');
 require_once('utils/config.php');
 
 try {
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'welcome') {
-            welcomePage();
+            $homeController = new HomeController();
+            $homeController->home();
         } elseif ($_GET['action'] == 'signup') {
-            signupPage();
+            $signupController = new SignupController();
+            $signupController->signup();
         } elseif ($_GET['action'] == 'login') {
             $loginController = new LoginController();
-            $loginController->loginAction();
+            $loginController->login();
+        } elseif ($_GET['action'] == 'logout') {
+            $logoutController = new LogoutController();
+            $logoutController->logout();
         } elseif ($_GET['action'] == 'posts') {
             listPostsPage();
         } elseif ($_GET['action'] == 'post') {
@@ -23,18 +31,18 @@ try {
             } else {
                 throw new Exception('Erreur lors de récupération de l\'article !');
             }
-        }
-        else {
-            $errorTitle = 'Erreur 404';
+        } else {
+            $errorTitle   = 'Erreur 404';
             $errorMessage = 'Cette page n\'existe pas';
             require 'utils/error.php';
             die;
         }
     } else {
-        welcomePage();
+        $homeController = new HomeController();
+        $homeController->home();
     }
 } catch (Exception $e) {
-    $errorTitle = 'Erreur';
+    $errorTitle   = 'Erreur';
     $errorMessage = $e->getMessage();
     require 'utils/error.php';
     die;

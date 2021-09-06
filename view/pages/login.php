@@ -1,8 +1,6 @@
 <?php
-/** @var array $loginErrors */
-
-$pageTitle = 'Connexion';
-ob_start();
+/** @var array $errors */
+/** @var string $pageTitle */
 ?>
 
 <h1><?= $pageTitle ?></h1>
@@ -21,10 +19,8 @@ ob_start();
 <br/>
 <span class="error">
     <?php
-        foreach ($loginErrors as $errorMessage) {
-            echo $errorMessage . '<br>';
-        } ?>
+    foreach ($errors as $errorMessage) {
+        echo $errorMessage . '<br>';
+    } ?>
 </span>
-<?php $content = ob_get_clean(); ?>
 
-<?php require('view/template.php'); ?>

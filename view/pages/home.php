@@ -1,20 +1,17 @@
 <?php
-$pageTitle = 'Bienvenue sur mon blog';
-ob_start();
+/** @var array $userName */
+/** @var string $pageTitle */
 ?>
 
-<h1><?= $pageTitle ?> <?= $_SESSION['pseudo'] ?? '' ?> !</h1>
+<h1><?= $pageTitle ?> <?= $userName ?> !</h1>
 <a href="?action=posts">Voir les articles</a>
 <br/>
 
 <?php
 if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
-    echo ' <a href="?action=login&logout">Se déconnecter</a>';
+    echo ' <a href="?action=logout">Se déconnecter</a>';
 } else {
     echo ' <a href="?action=login">Se connecter</a><br/>';
     echo '<a href="?action=signup">S\'inscrire</a>';
 }
 ?>
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>

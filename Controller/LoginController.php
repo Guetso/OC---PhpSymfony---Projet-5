@@ -3,10 +3,16 @@
 namespace Blog\Controller;
 
 use Blog\Manager\AuthManager;
+use Exception;
 
 class LoginController extends Controller
 {
-    public function loginAction()
+    public function __construct()
+    {
+        $this->setTitle('Connexion');
+    }
+
+    public function login()
     {
         if (isset($_POST['controlSubmit'])) {
             $validForm = true;
@@ -15,19 +21,21 @@ class LoginController extends Controller
                 $this->setErrorMessages('Il faut renseigner tous les champs !');
             }
             if ($validForm === true) {
-                $_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
+                $_POST['pseudo']   = htmlspecialchars($_POST['pseudo']);
                 $_POST['password'] = htmlspecialchars($_POST['password']);
-                $authManager = new AuthManager();
+                $authManager       = new AuthManager();
                 try {
                     $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
-                    login($getLogin['id'], $getLogin['pseudo']);
+                    setSession($getLogin['id'], $getLogin['pseudo']);
                     header('Location: ?action=welcome');
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->setErrorMessages($e->getMessage());
                 }
             }
         }
-        $loginErrors = $this->getErrorMessages();
-        require('view/pages/login.php');
+        $pageTitle   = $this->getTitle();
+        $errors = $this->getErrorMessages();
+        $this->render('pages.login', compact('pageTitle', 'errors'));
+
     }
 }

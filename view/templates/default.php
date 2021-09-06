@@ -1,4 +1,7 @@
-<?php /** @var string $pageTitle */ ?>
+<?php
+/** @var string $pageTitle */
+/** @var mixed $content */
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
