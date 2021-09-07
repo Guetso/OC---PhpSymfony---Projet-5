@@ -30,7 +30,7 @@
         <?php foreach ($errors as $errorMessage) {
             echo $errorMessage . '<br>';
         } ?>
-    </span>
+</span>
 <br/>
 <div>
     <span>Un mot de passe valide aura:</span>

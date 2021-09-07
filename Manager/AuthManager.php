@@ -3,7 +3,6 @@
 namespace Blog\Manager;
 
 use Exception;
-use PDOException;
 
 require_once('Manager/Manager.php');
 
@@ -21,8 +20,8 @@ class AuthManager extends Manager
                     'pass' => $pass_hache,
                     'email' => $email)
             );
-        } catch (PDOException  $sqlError) {
-            throw $sqlError;
+        } catch (Exception $e) {
+            throw $e;
         } finally {
             $stmt->closeCursor();
         }

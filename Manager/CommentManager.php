@@ -7,7 +7,7 @@ require_once('Manager/Manager.php');
 
 class CommentManager extends Manager
 {
-    public function getPostComments($id_post, $commentsPerPage, $offset)
+    public function getPostComments($id_post, $commentsPerPage, $offset) : array
     {
         $db = $this->dbConnect();
         $stmt = $db->prepare(

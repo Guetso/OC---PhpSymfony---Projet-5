@@ -1,30 +1,21 @@
 <?php
-/** @var string $postTitle */
-/** @var string $postContent */
-/** @var string $postChapo */
-/** @var string $postAuthor */
-/** @var string $updatedDateTime */
-
-$pageTitle = $postTitle;
-ob_start();
+/** @var string $pageTitle */
+/** @var array $postData */
 ?>
+
 <article class="news">
-    <h1><?= $postTitle ?></h1>
-    <span><?= $updatedDateTime ?></span>
+    <h1><?= $postData['postTitle'] ?></h1>
+    <span><?= $postData['updatedDateTime'] ?></span>
     <br/>
     <a href="?action=posts">Retour à la liste des billets</a>
 
     <h3>
-        <?= $postChapo ?>
+        <?= $postData['postChapo'] ?>
     </h3>
 
     <p>
-        <?= $postContent ?>
+        <?= $postData['postContent'] ?>
         <br/>
-        <strong><?= $postAuthor ?></strong>
+        <strong><?= $postData['postAuthor'] ?></strong>
     </p>
 </article>
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/default.php'); ?>

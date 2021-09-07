@@ -39,14 +39,14 @@ class SignupController extends Controller
                 $this->setErrorMessages('La confirmation du mot de passe a échouée !');
             }
             if ($validForm === true) {
-                $_POST['pseudo']          = htmlspecialchars($_POST['pseudo']);
-                $_POST['email']           = htmlspecialchars($_POST['email']);
-                $_POST['password']        = htmlspecialchars($_POST['password']);
+                $_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
+                $_POST['email'] = htmlspecialchars($_POST['email']);
+                $_POST['password'] = htmlspecialchars($_POST['password']);
                 $_POST['passwordConfirm'] = htmlspecialchars($_POST['passwordConfirm']);
 
                 $pass_hache = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                $authManager = new AuthManager();
                 try {
-                    $authManager = new AuthManager();
                     $authManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                     try {
                         $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
@@ -55,18 +55,19 @@ class SignupController extends Controller
                     } catch (Exception $e) {
                         $this->setErrorMessages($e->getMessage());
                     }
-                } catch (Exception $sqlError) {
-                    $sqlErrorMessages = $sqlError->getMessage();
-                    if (str_contains($sqlErrorMessages, 'members.pseudo')) {
-                        $this->setErrorMessages($sqlError->getMessage());
-                    }
-                    if (str_contains($sqlErrorMessages, 'members.email')) {
-                        $this->setErrorMessages($sqlError->getMessage());
+                } catch (Exception $e) {
+                    $sqlErrorMessages = $e->getMessage();
+                    if (str_contains($e->getMessage(), 'pseudo')) {
+                        $this->setErrorMessages('Ce pseudo est déjà utilisé');
+                    } elseif (str_contains($sqlErrorMessages, 'email')) {
+                        $this->setErrorMessages('Cet email est déjà utilisé');
+                    } else {
+                        $this->setErrorMessages($e->getMessage());
                     }
                 }
             }
         }
-        $pageTitle   = $this->getTitle();
+        $pageTitle = $this->getTitle();
         $errors = $this->getErrorMessages();
         $this->render('pages.signup', compact('pageTitle', 'errors'));
     }
