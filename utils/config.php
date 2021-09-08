@@ -13,9 +13,3 @@ function setSession($id, $pseudo) {
     $_SESSION['id'] = $id;
     $_SESSION['pseudo'] = $pseudo;
 }
-
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-}
