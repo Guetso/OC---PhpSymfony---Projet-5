@@ -6,11 +6,40 @@ namespace Blog\Controller;
 use Blog\Manager\UserManager;
 use Exception;
 
-class SignupController extends Controller
+class UserController extends Controller
 {
-    public function __construct()
+    public function login()
     {
-        $this->setTitle('Inscription');
+        if (isset($_POST['controlSubmit'])) {
+            $validForm = true;
+            if (empty($_POST['pseudo']) || empty($_POST['password'])) {
+                $validForm = false;
+                $this->setInfoMessages('Il faut renseigner tous les champs !');
+            }
+            if ($validForm === true) {
+                $_POST['pseudo']   = htmlspecialchars($_POST['pseudo']);
+                $_POST['password'] = htmlspecialchars($_POST['password']);
+                $userManager       = new UserManager();
+                try {
+                    $login = $userManager->login($_POST['pseudo'], $_POST['password']);
+                    setSession($login['id'], $login['pseudo']);
+                    header('Location: ?action=welcome');
+                } catch (Exception $e) {
+                    $this->setInfoMessages($e->getMessage());
+                }
+            }
+        }
+        $pageTitle = 'Connexion';
+        $errors    = $this->getInfoMessages();
+        $this->render('pages.login', compact('pageTitle', 'errors'));
+    }
+
+    public function logout()
+    {
+        $_SESSION = array();
+        session_destroy();
+        $homeController = new HomeController();
+        $homeController->home();
     }
 
     public function signup()
@@ -67,8 +96,9 @@ class SignupController extends Controller
                 }
             }
         }
-        $pageTitle = $this->getTitle();
+        $pageTitle = 'Inscription';
         $errors    = $this->getInfoMessages();
         $this->render('pages.signup', compact('pageTitle', 'errors'));
     }
+
 }

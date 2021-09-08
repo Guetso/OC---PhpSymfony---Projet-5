@@ -1,10 +1,7 @@
 <?php
 
-use Blog\Controller\LoginController;
 use Blog\Controller\HomeController;
-use Blog\Controller\SignupController;
-use Blog\Controller\LogoutController;
-use Blog\Controller\PostsController;
+use Blog\Controller\UserController;
 use Blog\Controller\PostController;
 use Blog\Controller\ErrorController;
 
@@ -16,16 +13,16 @@ try {
             $homeController = new HomeController();
             $homeController->home();
         } elseif ($_GET['action'] == 'signup') {
-            $signupController = new SignupController();
+            $signupController = new UserController();
             $signupController->signup();
         } elseif ($_GET['action'] == 'login') {
-            $loginController = new LoginController();
+            $loginController = new UserController();
             $loginController->login();
         } elseif ($_GET['action'] == 'logout') {
-            $logoutController = new LogoutController();
+            $logoutController = new UserController();
             $logoutController->logout();
         } elseif ($_GET['action'] == 'posts') {
-            $postsController = new PostsController();
+            $postsController = new PostController();
             $postsController->posts();
         } elseif ($_GET['action'] == 'post') {
             $postController = new PostController();

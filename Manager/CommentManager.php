@@ -1,5 +1,7 @@
 <?php
+
 namespace Blog\Manager;
+
 use PDO;
 use PDOException;
 
@@ -7,13 +9,13 @@ require_once('Manager/Manager.php');
 
 class CommentManager extends Manager
 {
-    public function getPostComments($id_post, $commentsPerPage, $offset) : array
+    public function getPostComments($id_post, $commentsPerPage, $offset): array
     {
-        $db = $this->dbConnect();
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $db->prepare(
-            'SELECT comments.post_id, members.pseudo AS author , comments.content,
+            'SELECT comments.id,comments.post_id, members.pseudo AS author , comments.content,
             DATE_FORMAT(comments.created_at, \'%d/%m/%Y\') AS date,
-            DATE_FORMAT(comments.created_at, \'%Hh%imin%ss\') AS time
+            DATE_FORMAT(comments.created_at, \'%Hh%m\') AS time
             FROM comments INNER JOIN members ON comments.author = members.id
             WHERE post_id = ? ORDER BY comments.created_at DESC
             LIMIT ? OFFSET ?');
@@ -29,23 +31,25 @@ class CommentManager extends Manager
 
     public function getCommentsNb($id_post)
     {
-        $db = $this->dbConnect();
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $db->prepare('SELECT COUNT(*) AS nb_comments FROM comments WHERE post_id = ?');
         $stmt->execute(array($id_post));
-        $nber = $stmt->fetch()['nb_comments'];
+        $number = $stmt->fetch()['nb_comments'];
         $stmt->closeCursor();
-        return $nber;
+        return $number;
     }
 
     public function createPostComment($postId, $author, $comment)
     {
-        $db = $this->dbConnect();
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $db->prepare('INSERT INTO comments (post_id, author, content) VALUES(:post_id, :author, :content)');
         try {
-            $stmt->execute(array(
+            $stmt->execute(
+                array(
                     'post_id' => $postId,
-                    'author' => $author,
-                    'content' => $comment)
+                    'author'  => $author,
+                    'content' => $comment
+                )
             );
         } catch (PDOException  $sqlError) {
             throw $sqlError;

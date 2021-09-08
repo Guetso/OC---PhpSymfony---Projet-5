@@ -2,6 +2,7 @@
 
 namespace Blog\Manager;
 
+use PDO;
 use Exception;
 
 class UserManager extends Manager
@@ -10,7 +11,7 @@ class UserManager extends Manager
 
     public function signup($pseudo, $pass_hache, $email)
     {
-        $bd   = $this->dbConnect();
+        $bd   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $bd->prepare('INSERT INTO members (pseudo, pass, email) VALUES(:pseudo, :pass, :email)');
         try {
             $stmt->execute(
@@ -29,7 +30,7 @@ class UserManager extends Manager
 
     public function login($pseudo, $pass)
     {
-        $bd   = $this->dbConnect();
+        $bd   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $bd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');
         try {
             $stmt->execute(
