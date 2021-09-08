@@ -33,23 +33,23 @@ class CommentFormController extends Controller
             $validForm = true;
             if (empty($_POST['comment'])) {
                 $validForm = false;
-                $this->setErrorMessages('Votre commentaire est vide !');
+                $this->setInfoMessages('Votre commentaire est vide !');
             }
             if ($validForm === true) {
                 $_POST['comment'] = htmlspecialchars($_POST['comment']);
-                $commentManager = new CommentManager();
-                $postId = $this->getPostId();
+                $commentManager   = new CommentManager();
+                $postId           = $this->getPostId();
                 try {
                     $commentManager->createPostComment($postId, $_SESSION['id'], $_POST['comment']);
-                    header('Location: ?action=post&post='. $postId);
+                    header('Location: ?action=post&post=' . $postId);
                 } catch
                 (Exception $e) {
-                    $this->setErrorMessages($e->getMessage());
+                    $this->setInfoMessages($e->getMessage());
                 }
             }
         }
-        $view = 'components.commentsForm';
-        $errors = $this->getErrorMessages();
+        $view      = 'components.commentsForm';
+        $errors    = $this->getInfoMessages();
         $variables = compact('errors');
         return compact('view', 'variables');
     }

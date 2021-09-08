@@ -7,7 +7,7 @@ class ErrorController extends Controller
     protected string $errorTitle;
     protected string $errorMessage;
 
-    public function __construct($errorTitle = 'Erreur', $errorMessage ='Une erreur inattendue est survenue')
+    public function __construct($errorTitle = 'Erreur', $errorMessage = 'Une erreur inattendue est survenue')
     {
         $this->setErrorTitle($errorTitle);
         $this->setTitle($errorTitle);
@@ -44,8 +44,8 @@ class ErrorController extends Controller
 
     public function error()
     {
-        $pageTitle = $this->getTitle();
-        $errorTitle = $this->getErrorTitle();
+        $pageTitle    = $this->getTitle();
+        $errorTitle   = $this->getErrorTitle();
         $errorMessage = $this->getErrorMessage();
         $this->render('pages.error', compact('errorTitle', 'errorMessage', 'pageTitle'));
     }

@@ -16,20 +16,20 @@ class PostsController extends Controller
     public function posts()
     {
         $postManager = new PostManager();
-        $posts = $postManager->getPosts();
-        $postsData = [];
+        $posts       = $postManager->getPosts();
+        $postsData   = [];
         foreach ($posts as $post) {
             $postsData[] = [
                 'postDetails' => htmlspecialchars($post['title']) .
                     ' le ' . htmlspecialchars($post['updatedDate']) .
                     ' à ' . htmlspecialchars($post['updatedTime']),
-                'postChapo' => htmlspecialchars($post['subtitle']),
-                'postAuthor' => $post['author'] ? htmlspecialchars($post['author']) : 'utilisateur inconnu',
-                'postLink' => '?action=post&post=' . htmlspecialchars($post['id'])
+                'postChapo'   => htmlspecialchars($post['subtitle']),
+                'postAuthor'  => $post['author'] ? htmlspecialchars($post['author']) : 'utilisateur inconnu',
+                'postLink'    => '?action=post&post=' . htmlspecialchars($post['id'])
             ];
         }
         $pageTitle = $this->getTitle();
-        $errors = $this->getErrorMessages();
+        $errors    = $this->getInfoMessages();
         $this->render('pages.posts', compact('postsData', 'pageTitle', 'errors'));
     }
 }

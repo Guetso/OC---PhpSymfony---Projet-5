@@ -34,7 +34,7 @@ class PostController extends Controller
 
                 $this->setTitle($postData['postTitle']);
                 $pageTitle = $this->getTitle();
-                $errors    = $this->getErrorMessages();
+                $errors    = $this->getInfoMessages();
 
                 if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
                     $commentFormController = new CommentFormController($postData['id_post']);
@@ -48,7 +48,7 @@ class PostController extends Controller
                         [$commentsComponent]);
                 }
             } catch (Exception $e) {
-                $this->setErrorMessages($e->getMessage());
+                $this->setInfoMessages($e->getMessage());
             }
         } else {
             $errorTitle      = 'Erreur 400';

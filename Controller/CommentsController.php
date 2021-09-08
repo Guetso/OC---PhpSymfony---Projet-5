@@ -49,7 +49,7 @@ class CommentsController extends Controller
         }
 
         $view      = 'components.comments';
-        $variables = compact('postId', 'comments', 'pageCommentNb',);
+        $variables = compact('postId', 'comments', 'pageCommentNb');
         return compact('view', 'variables');
     }
 }

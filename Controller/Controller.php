@@ -7,9 +7,7 @@ class Controller
     protected string $template = 'default';
     protected string $title = 'Mon Blog';
     protected string $viewPath = __DIR__ . '/../' . 'view/';
-    protected array $errorMessages = [];
-
-    //todo : changer $errorMessages par $infoMessages
+    protected array $infoMessages = [];
 
     public function render($view, $variables = [], $components = [])
     {
@@ -59,15 +57,14 @@ class Controller
         return $this;
     }
 
-    public function getErrorMessages(): array
+    public function getInfoMessages(): array
     {
-        return $this->errorMessages;
+        return $this->infoMessages;
     }
 
-    public function setErrorMessages(string $errorMessages): Controller
+    public function setInfoMessages(string $infoMessages): Controller
     {
-        $this->errorMessages[] = $errorMessages;
+        $this->infoMessages[] = $infoMessages;
         return $this;
     }
-
 }

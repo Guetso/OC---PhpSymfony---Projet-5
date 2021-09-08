@@ -18,7 +18,7 @@ class LoginController extends Controller
             $validForm = true;
             if (empty($_POST['pseudo']) || empty($_POST['password'])) {
                 $validForm = false;
-                $this->setErrorMessages('Il faut renseigner tous les champs !');
+                $this->setInfoMessages('Il faut renseigner tous les champs !');
             }
             if ($validForm === true) {
                 $_POST['pseudo']   = htmlspecialchars($_POST['pseudo']);
@@ -29,12 +29,12 @@ class LoginController extends Controller
                     setSession($getLogin['id'], $getLogin['pseudo']);
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
-                    $this->setErrorMessages($e->getMessage());
+                    $this->setInfoMessages($e->getMessage());
                 }
             }
         }
-        $pageTitle   = $this->getTitle();
-        $errors = $this->getErrorMessages();
+        $pageTitle = $this->getTitle();
+        $errors    = $this->getInfoMessages();
         $this->render('pages.login', compact('pageTitle', 'errors'));
     }
 }
