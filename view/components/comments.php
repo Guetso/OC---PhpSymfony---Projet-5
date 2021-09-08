@@ -1,8 +1,8 @@
 <?php
-/** @var integer $id_post */
-ob_start();
+/** @var array $comments */
+/** @var float $pageCommentNb */
+/** @var int $postId */
 ?>
-
 <aside>
     <h2>Commentaires</h2>
 
@@ -22,7 +22,7 @@ ob_start();
     <ul>
         <?php
         for ($i = 1; $i <= $pageCommentNb; $i++) {
-            $link = '?action=post&post=' . htmlspecialchars($id_post) . '&page=' . htmlspecialchars($i);
+            $link = '?action=post&post=' . htmlspecialchars($postId) . '&page=' . htmlspecialchars($i);
             echo '<li>' . '<a href="' . $link . '">' . $i . '</a>' . '</li>';
         }
         ?>

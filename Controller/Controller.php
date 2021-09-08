@@ -8,14 +8,20 @@ class Controller
     protected string $title = 'Mon Blog';
     protected string $viewPath = __DIR__ . '/../' . 'view/';
     protected array $errorMessages = [];
+
     //todo : changer $errorMessages par $infoMessages
 
-    public function render($view, $variables = []) {
+    public function render($view, $variables = [], $component = [])
+    {
         ob_start();
         extract($variables);
         require(sprintf("%s%s.php", $this->viewPath, str_replace('.', '/', $view)));
+        if (!empty($component)) {
+            extract($component['variables']);
+            require(sprintf("%s%s.php", $this->viewPath, str_replace('.', '/', $component['view'])));
+        }
         $content = ob_get_clean();
-        require (sprintf("%s/templates/%s.php", $this->viewPath, $this->template));
+        require(sprintf("%s/templates/%s.php", $this->viewPath, $this->template));
     }
 
     public function getTemplate(): string

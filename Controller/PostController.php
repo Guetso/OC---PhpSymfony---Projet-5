@@ -7,8 +7,6 @@ use Exception;
 
 class PostController extends Controller
 {
-    const COMMENTS_PER_PAGE = 5;
-
     public function setTitle($title): Controller
     {
         $this->title = parent::getTitle() . ' : ' . $title;
@@ -30,16 +28,19 @@ class PostController extends Controller
                     'postChapo' => htmlspecialchars($post['subtitle']),
                     'postContent' => htmlspecialchars($post['content'])
                 ];
-                $commentsPerPage = self::COMMENTS_PER_PAGE;
+
+                $commentsController = new CommentsController($postData['id_post']);
+                $commentsComponent = $commentsController->commentsComponents();
+
                 $this->setTitle($postData['postTitle']);
                 $pageTitle = $this->getTitle();
                 $errors = $this->getErrorMessages();
-                $this->render('pages.post', compact('postData', 'commentsPerPage', 'pageTitle', 'errors'));
+                $this->render('pages.post', compact('postData', 'pageTitle', 'errors'), $commentsComponent);
             } catch (Exception $e) {
                 $this->setErrorMessages($e->getMessage());
             }
         } else {
-            $errorTitle   = 'Erreur 400';
+            $errorTitle = 'Erreur 400';
             $errorMessage = 'La syntaxe de la requête est erronée.';
             $errorController = new ErrorController($errorTitle, $errorMessage);
             $errorController->error();
