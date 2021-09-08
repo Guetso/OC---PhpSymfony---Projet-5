@@ -49,8 +49,8 @@ class SignupController extends Controller
                 try {
                     $authManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                     try {
-                        $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
-                        setSession($getLogin['id'], $getLogin['pseudo']);
+                        $login = $authManager->login($_POST['pseudo'], $_POST['password']);
+                        setSession($login['id'], $login['pseudo']);
                         header('Location: ?action=welcome');
                     } catch (Exception $e) {
                         $this->setInfoMessages($e->getMessage());

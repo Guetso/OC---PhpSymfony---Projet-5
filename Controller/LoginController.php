@@ -25,8 +25,8 @@ class LoginController extends Controller
                 $_POST['password'] = htmlspecialchars($_POST['password']);
                 $authManager       = new AuthManager();
                 try {
-                    $getLogin = $authManager->getLogin($_POST['pseudo'], $_POST['password']);
-                    setSession($getLogin['id'], $getLogin['pseudo']);
+                    $login= $authManager->login($_POST['pseudo'], $_POST['password']);
+                    setSession($login['id'], $login['pseudo']);
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
                     $this->setInfoMessages($e->getMessage());
