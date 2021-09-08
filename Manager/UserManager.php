@@ -4,7 +4,7 @@ namespace Blog\Manager;
 
 use Exception;
 
-class AuthManager extends Manager
+class UserManager extends Manager
 {
     private const ERROR_LOGIN = 'Mauvais identifiant ou mot de passe !';
 

@@ -3,7 +3,7 @@
 
 namespace Blog\Controller;
 
-use Blog\Manager\AuthManager;
+use Blog\Manager\UserManager;
 use Exception;
 
 class SignupController extends Controller
@@ -45,11 +45,11 @@ class SignupController extends Controller
                 $_POST['passwordConfirm'] = htmlspecialchars($_POST['passwordConfirm']);
 
                 $pass_hache  = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $authManager = new AuthManager();
+                $userManager = new UserManager();
                 try {
-                    $authManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
+                    $userManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                     try {
-                        $login = $authManager->login($_POST['pseudo'], $_POST['password']);
+                        $login = $userManager->login($_POST['pseudo'], $_POST['password']);
                         setSession($login['id'], $login['pseudo']);
                         header('Location: ?action=welcome');
                     } catch (Exception $e) {

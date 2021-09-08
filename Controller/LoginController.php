@@ -2,7 +2,7 @@
 
 namespace Blog\Controller;
 
-use Blog\Manager\AuthManager;
+use Blog\Manager\UserManager;
 use Exception;
 
 class LoginController extends Controller
@@ -23,9 +23,9 @@ class LoginController extends Controller
             if ($validForm === true) {
                 $_POST['pseudo']   = htmlspecialchars($_POST['pseudo']);
                 $_POST['password'] = htmlspecialchars($_POST['password']);
-                $authManager       = new AuthManager();
+                $userManager       = new UserManager();
                 try {
-                    $login= $authManager->login($_POST['pseudo'], $_POST['password']);
+                    $login= $userManager->login($_POST['pseudo'], $_POST['password']);
                     setSession($login['id'], $login['pseudo']);
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
