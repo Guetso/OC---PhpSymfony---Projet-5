@@ -36,6 +36,5 @@ class LoginController extends Controller
         $pageTitle   = $this->getTitle();
         $errors = $this->getErrorMessages();
         $this->render('pages.login', compact('pageTitle', 'errors'));
-
     }
 }

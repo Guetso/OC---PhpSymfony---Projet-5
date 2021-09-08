@@ -11,17 +11,19 @@ class Controller
 
     //todo : changer $errorMessages par $infoMessages
 
-    public function render($view, $variables = [], $component = [])
+    public function render($view, $variables = [], $components = [])
     {
         ob_start();
         extract($variables);
-        require(sprintf("%s%s.php", $this->viewPath, str_replace('.', '/', $view)));
-        if (!empty($component)) {
-            extract($component['variables']);
-            require(sprintf("%s%s.php", $this->viewPath, str_replace('.', '/', $component['view'])));
+        require($this->viewPath . "" . str_replace('.', '/', $view) . ".php");
+        if (!empty($components)) {
+            foreach ($components as $component) {
+                extract($component['variables']);
+                require($this->viewPath . "" . str_replace('.', '/', $component['view']) . ".php");
+            }
         }
         $content = ob_get_clean();
-        require(sprintf("%s/templates/%s.php", $this->viewPath, $this->template));
+        require($this->viewPath . "/templates/" . $this->template . ".php");
     }
 
     public function getTemplate(): string

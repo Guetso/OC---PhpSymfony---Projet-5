@@ -1,3 +1,7 @@
+<?php
+/** @var array $errors */
+?>
+
 <form method="post">
     <input type="hidden" name="controlSubmit">
 
@@ -9,8 +13,8 @@
 </form>
 <br/>
 <span class="error">
-        <?php foreach ($errorMessages['generic'] as $errorMessage) {
-            echo $errorMessage . '<br>';
+        <?php foreach ($errors as $error) {
+            echo $error . '<br>';
         } ?>
     </span>
 <br/>

@@ -37,21 +37,18 @@ class CommentsController extends Controller
         $postId = $this->getPostId();
 
         $commentManager = new CommentManager();
-        $comments = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
-        $comments_nb = $commentManager->getCommentsNb($postId);
-        $pageCommentNb = ceil($comments_nb / self::COMMENTS_PER_PAGE);
+        $comments       = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
+        $comments_nb    = $commentManager->getCommentsNb($postId);
+        $pageCommentNb  = ceil($comments_nb / self::COMMENTS_PER_PAGE);
 
         if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
-            $errorTitle = 'Erreur 404';
-            $errorMessage = 'Cette page n\'existe pas !';
+            $errorTitle      = 'Erreur 404';
+            $errorMessage    = 'Cette page n\'existe pas !';
             $errorController = new ErrorController($errorTitle, $errorMessage);
             $errorController->error();
         }
 
- /*       if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
-            require './Controller/commentsForm.php';
-        }*/
-        $view = 'components.comments';
+        $view      = 'components.comments';
         $variables = compact('postId', 'comments', 'pageCommentNb',);
         return compact('view', 'variables');
     }
