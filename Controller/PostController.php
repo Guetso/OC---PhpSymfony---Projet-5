@@ -43,6 +43,13 @@ class PostController extends Controller
 
             try {
                 $postDatas = $postManager->getOnePost($postId);
+                if (!$postDatas) {
+                    $errorTitle      = 'Erreur 404';
+                    $errorMessage    = 'La page demandée n\'existe pas.';
+                    $errorController = new ErrorController($errorTitle, $errorMessage);
+                    $errorController->error();
+                    die;
+                }
                 $post      = [
                     'id'              => $postDatas['id'],
                     'updatedDateTime' => 'le ' . htmlspecialchars(
@@ -130,5 +137,32 @@ class PostController extends Controller
             $errorController->error();
         }
         return compact('comments', 'pageCommentNb');
+    }
+
+    public function commentFormComponent(): array
+    {
+        if (isset($_POST['controlSubmit'])) {
+            $validForm = true;
+            if (empty($_POST['comment'])) {
+                $validForm = false;
+                $this->setInfoMessages('Votre commentaire est vide !');
+            }
+            if ($validForm === true) {
+                $_POST['comment'] = htmlspecialchars($_POST['comment']);
+                $commentManager   = new CommentManager();
+                $postId           = $this->getPostId();
+                try {
+                    $commentManager->createPostComment($postId, $_SESSION['id'], $_POST['comment']);
+                    header('Location: ?action=post&post=' . $postId);
+                } catch
+                (Exception $e) {
+                    $this->setInfoMessages($e->getMessage());
+                }
+            }
+        }
+        $view      = 'components.commentsForm';
+        $errors    = $this->getInfoMessages();
+        $variables = compact('errors');
+        return compact('view', 'variables');
     }
 }
