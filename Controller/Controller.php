@@ -5,7 +5,7 @@ namespace Blog\Controller;
 class Controller
 {
     protected string $template = 'default';
-    protected string $title = 'Mon Blog';
+    protected string $pageTitle = 'Mon Blog';
     protected string $viewPath = __DIR__ . '/../' . 'view/';
     protected array $infoMessages = [];
 
@@ -46,14 +46,14 @@ class Controller
         return $this;
     }
 
-    public function getTitle(): string
+    public function getPageTitle(): string
     {
-        return $this->title;
+        return $this->pageTitle;
     }
 
-    public function setTitle($title): Controller
+    public function setPageTitle($title): Controller
     {
-        $this->title = $title;
+        $this->pageTitle = $title;
         return $this;
     }
 

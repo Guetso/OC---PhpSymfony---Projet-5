@@ -8,12 +8,12 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->setTitle('Bienvenue sur mon Blog');
+        $this->setPageTitle('Bienvenue sur mon Blog');
     }
 
     public function home()
     {
-        $pageTitle   = $this->getTitle();
+        $pageTitle   = $this->getPageTitle();
         $loginErrors = $this->getInfoMessages();
         $userName    = $_SESSION['pseudo'] ?? '';
         $this->render('pages.home', compact('pageTitle', 'userName', 'loginErrors'));

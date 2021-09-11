@@ -23,9 +23,9 @@ class PostController extends Controller
         return $this;
     }
 
-    public function setTitle($title): Controller
+    public function setPageTitle($title): Controller
     {
-        $this->title = parent::getTitle() . ' : ' . $title;
+        $this->pageTitle = parent::getPageTitle() . ' : ' . $title;
         return $this;
     }
 
@@ -76,12 +76,12 @@ class PostController extends Controller
                     'content'         => htmlspecialchars($postDatas['content'])
                 ];
 
-                $this->setTitle($post['title']);
+                $this->setPageTitle($post['title']);
 
                 $commentsDatas = $this->getPostComments($postId);
                 $comments      = $commentsDatas['comments'];
                 $commentNbPage = $commentsDatas['pageCommentNb'];
-                $pageTitle     = $this->getTitle();
+                $pageTitle     = $this->getPageTitle();
                 $connected     = false;
                 if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
                     $connected = true;

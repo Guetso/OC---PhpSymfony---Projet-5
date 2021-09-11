@@ -16,7 +16,7 @@ class ErrorController extends Controller
 
     public function setTitle($title): Controller
     {
-        $this->title = parent::getTitle() . ' : ' . $title;
+        $this->pageTitle = parent::getPageTitle() . ' : ' . $title;
         return $this;
     }
 
@@ -44,7 +44,7 @@ class ErrorController extends Controller
 
     public function error()
     {
-        $pageTitle    = $this->getTitle();
+        $pageTitle    = $this->getPageTitle();
         $errorTitle   = $this->getErrorTitle();
         $errorMessage = $this->getErrorMessage();
         $this->render('pages.error', compact('errorTitle', 'errorMessage', 'pageTitle'));
