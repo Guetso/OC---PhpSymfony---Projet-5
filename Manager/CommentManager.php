@@ -9,17 +9,17 @@ require_once('Manager/Manager.php');
 
 class CommentManager extends Manager
 {
-    public function getPostComments($id_post, $commentsPerPage, $offset): array
+    public function getPostComments($postId, $commentsPerPage, $offset): array
     {
         $db   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $db->prepare(
-            'SELECT comments.id,comments.post_id, members.pseudo AS author , comments.content,
+            'SELECT comments.id,comments.postId, members.pseudo AS author , comments.content,
             DATE_FORMAT(comments.created_at, \'%d/%m/%Y\') AS date,
             DATE_FORMAT(comments.created_at, \'%Hh%m\') AS time
             FROM comments INNER JOIN members ON comments.author = members.id
-            WHERE post_id = ? ORDER BY comments.created_at DESC
+            WHERE postId = ? ORDER BY comments.created_at DESC
             LIMIT ? OFFSET ?');
-        $stmt->bindParam(1, $id_post, PDO::PARAM_INT);
+        $stmt->bindParam(1, $postId, PDO::PARAM_INT);
         $stmt->bindParam(2, $commentsPerPage, PDO::PARAM_INT);
         $stmt->bindParam(3, $offset, PDO::PARAM_INT);
         $stmt->execute();
@@ -29,11 +29,11 @@ class CommentManager extends Manager
         return $comments;
     }
 
-    public function getCommentsNb($id_post)
+    public function getCommentsNb($postId)
     {
         $db   = $this->dbConnect(PDO::FETCH_ASSOC);
-        $stmt = $db->prepare('SELECT COUNT(*) AS nb_comments FROM comments WHERE post_id = ?');
-        $stmt->execute(array($id_post));
+        $stmt = $db->prepare('SELECT COUNT(*) AS nb_comments FROM comments WHERE postId = ?');
+        $stmt->execute(array($postId));
         $number = $stmt->fetch()['nb_comments'];
         $stmt->closeCursor();
         return $number;
@@ -42,11 +42,11 @@ class CommentManager extends Manager
     public function createPostComment($postId, $author, $comment)
     {
         $db   = $this->dbConnect(PDO::FETCH_ASSOC);
-        $stmt = $db->prepare('INSERT INTO comments (post_id, author, content) VALUES(:post_id, :author, :content)');
+        $stmt = $db->prepare('INSERT INTO comments (postId, author, content) VALUES(:postId, :author, :content)');
         try {
             $stmt->execute(
                 array(
-                    'post_id' => $postId,
+                    'postId' => $postId,
                     'author'  => $author,
                     'content' => $comment
                 )

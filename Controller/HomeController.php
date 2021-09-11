@@ -11,7 +11,7 @@ class HomeController extends Controller
         $this->setPageTitle('Bienvenue sur mon Blog');
     }
 
-    public function home()
+    public function displayHome()
     {
         $pageTitle   = $this->getPageTitle();
         $loginErrors = $this->getInfoMessages();

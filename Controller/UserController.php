@@ -39,7 +39,7 @@ class UserController extends Controller
         $_SESSION = array();
         session_destroy();
         $homeController = new HomeController();
-        $homeController->home();
+        $homeController->displayHome();
     }
 
     public function signup()

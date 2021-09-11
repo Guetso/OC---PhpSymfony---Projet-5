@@ -11,7 +11,7 @@ try {
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'welcome') {
             $homeController = new HomeController();
-            $homeController->home();
+            $homeController->displayHome();
         } elseif ($_GET['action'] == 'signup') {
             $signupController = new UserController();
             $signupController->signup();
@@ -36,7 +36,7 @@ try {
         }
     } else {
         $homeController = new HomeController();
-        $homeController->home();
+        $homeController->displayHome();
     }
 } catch (Exception $e) {
     $errorTitle   = 'Erreur';
