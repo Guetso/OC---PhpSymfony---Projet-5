@@ -8,12 +8,28 @@ use Exception;
 
 class PostController extends Controller
 {
-
     const COMMENTS_PER_PAGE = 5;
 
     private int $postId;
 
-    public function posts()
+    public function getPostId(): int
+    {
+        return $this->postId;
+    }
+
+    public function setPostId(int $postId): PostController
+    {
+        $this->postId = $postId;
+        return $this;
+    }
+
+    public function setTitle($title): Controller
+    {
+        $this->title = parent::getTitle() . ' : ' . $title;
+        return $this;
+    }
+
+    public function displayPosts()
     {
         $postManager = new PostManager();
         $posts       = $postManager->getPosts();
@@ -33,7 +49,7 @@ class PostController extends Controller
         $this->render('pages.posts', compact('postsData', 'pageTitle', 'errors'));
     }
 
-    public function post()
+    public function displayPost()
     {
         if (isset($_GET['post']) && $_GET['post'] > 0) {
             $_GET['post'] = (int)$_GET['post'];
@@ -50,7 +66,7 @@ class PostController extends Controller
                     $errorController->error();
                     die;
                 }
-                $post      = [
+                $post = [
                     'id'              => $postDatas['id'],
                     'updatedDateTime' => 'le ' . htmlspecialchars(
                             $postDatas['updatedDate']) . ' à ' . $postDatas['updatedTime'],
@@ -63,21 +79,20 @@ class PostController extends Controller
                 $this->setTitle($post['title']);
 
                 $commentsDatas = $this->getPostComments($postId);
-                $comments = $commentsDatas['comments'];
+                $comments      = $commentsDatas['comments'];
                 $commentNbPage = $commentsDatas['pageCommentNb'];
                 $pageTitle     = $this->getTitle();
-                $errors        = $this->getInfoMessages();
-
+                $connected     = false;
                 if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
-                    $commentFormController = new CommentFormController($post['id_post']);
-                    $commentFormComponent  = $commentFormController->commentFormComponent();
-                    $this->render(
-                        'pages.post', compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors'),
-                        [$commentFormComponent]);
-                } else {
-                    $this->render(
-                        'pages.post', compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors'));
+                    $connected = true;
+                    if (isset($_POST['controlSubmit'])) {
+                        $this->commentFormComponent();
+                    }
                 }
+                $errors = $this->getInfoMessages();
+                $this->render(
+                    'pages.post', compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors', 'connected'),
+                );
             } catch (Exception $e) {
                 $this->setInfoMessages($e->getMessage());
             }
@@ -89,23 +104,6 @@ class PostController extends Controller
         }
     }
 
-    public function getPostId(): int
-    {
-        return $this->postId;
-    }
-
-    public function setPostId(int $postId): PostController
-    {
-        $this->postId = $postId;
-        return $this;
-    }
-
-    public function setTitle($title): Controller
-    {
-        $this->title = parent::getTitle() . ' : ' . $title;
-        return $this;
-    }
-
     public function getPostComments($postId): array
     {
         if ((isset($_GET['page'])) && (!empty($_GET['page'])) && ($_GET['page'] > 0)) {
@@ -113,11 +111,11 @@ class PostController extends Controller
         } else {
             $pageNbr = 1;
         }
-        $offset = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
-
+        $offset         = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
         $commentManager = new CommentManager();
-        $commentsDatas       = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
-        $comments  = null;
+
+        $commentsDatas = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
+        $comments      = null;
         foreach ($commentsDatas as $comment) {
             $comments[] = [
                 'id'              => $comment['id'],
@@ -127,19 +125,19 @@ class PostController extends Controller
                 'content'         => htmlspecialchars($comment['content'])
             ];
         }
-        $comments_nb    = $commentManager->getCommentsNb($postId);
-        $pageCommentNb  = ceil($comments_nb / self::COMMENTS_PER_PAGE);
-
+        $comments_nb   = $commentManager->getCommentsNb($postId);
+        $pageCommentNb = ceil($comments_nb / self::COMMENTS_PER_PAGE);
         if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
             $errorTitle      = 'Erreur 404';
             $errorMessage    = 'Cette page n\'existe pas !';
             $errorController = new ErrorController($errorTitle, $errorMessage);
             $errorController->error();
+            die;
         }
         return compact('comments', 'pageCommentNb');
     }
 
-    public function commentFormComponent(): array
+    public function commentFormComponent()
     {
         if (isset($_POST['controlSubmit'])) {
             $validForm = true;
@@ -160,9 +158,5 @@ class PostController extends Controller
                 }
             }
         }
-        $view      = 'components.commentsForm';
-        $errors    = $this->getInfoMessages();
-        $variables = compact('errors');
-        return compact('view', 'variables');
     }
 }

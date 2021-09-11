@@ -4,6 +4,7 @@
 /** @var array $comments */
 /** @var int $commentNbPage */
 /** @var array $errors */
+/** @var bool $connected */
 ?>
 
 <article class="news">
@@ -46,19 +47,25 @@
     </ul>
 </aside>
 
-<form method="post">
-    <input type="hidden" name="controlSubmit">
+<?php
+if ($connected) {
+    ?>
+    <form method="post">
+        <input type="hidden" name="controlSubmit">
 
-    <label for="comment">Votre commentaire: </label>
+        <label for="comment">Votre commentaire: </label>
+        <br/>
+        <textarea id="comment" name="comment" cols="33" rows="5"></textarea>
+        <br/>
+        <input type="submit" value="Poster">
+    </form>
     <br/>
-    <textarea id="comment" name="comment" cols="33" rows="5"></textarea>
-    <br/>
-    <input type="submit" value="Poster">
-</form>
-<br/>
-<span class="error">
+    <span class="error">
         <?php foreach ($errors as $error) {
             echo $error . '<br>';
         } ?>
     </span>
-<br/>
+    <br/>
+    <?php
+}
+?>

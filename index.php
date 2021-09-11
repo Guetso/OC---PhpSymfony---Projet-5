@@ -23,10 +23,10 @@ try {
             $logoutController->logout();
         } elseif ($_GET['action'] == 'posts') {
             $postsController = new PostController();
-            $postsController->posts();
+            $postsController->displayPosts();
         } elseif ($_GET['action'] == 'post') {
             $postController = new PostController();
-            $postController->post();
+            $postController->displayPost();
         } else {
             $errorTitle   = 'Erreur 404';
             $errorMessage = 'Cette page n\'existe pas.';
