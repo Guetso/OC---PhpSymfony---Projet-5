@@ -2,6 +2,7 @@
 
 namespace Blog\Manager;
 
+use Blog\Model\User;
 use PDO;
 use Exception;
 
@@ -21,14 +22,12 @@ class UserManager extends Manager
                     'email'  => $email
                 )
             );
-        } catch (Exception $e) {
-            throw $e;
         } finally {
             $stmt->closeCursor();
         }
     }
 
-    public function login($pseudo, $pass)
+    public function login($pseudo, $pass): User
     {
         $bd   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $bd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');
@@ -44,13 +43,11 @@ class UserManager extends Manager
                 throw new Exception(self::ERROR_LOGIN);
             } else {
                 if ($isPassCorrect) {
-                    return $response;
+                    return new User($response);
                 } else {
                     throw new Exception(self::ERROR_LOGIN);
                 }
             }
-        } catch (Exception $e) {
-            throw $e;
         } finally {
             $stmt->closeCursor();
         }

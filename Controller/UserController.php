@@ -21,8 +21,8 @@ class UserController extends Controller
                 $_POST['password'] = htmlspecialchars($_POST['password']);
                 $userManager       = new UserManager();
                 try {
-                    $login = $userManager->login($_POST['pseudo'], $_POST['password']);
-                    setSession($login['id'], $login['pseudo']);
+                    $user = $userManager->login($_POST['pseudo'], $_POST['password']);
+                    setSession($user->getId(), $user->getPseudo());
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
                     $this->setInfoMessages($e->getMessage());
@@ -78,8 +78,8 @@ class UserController extends Controller
                 try {
                     $userManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                     try {
-                        $login = $userManager->login($_POST['pseudo'], $_POST['password']);
-                        setSession($login['id'], $login['pseudo']);
+                        $user = $userManager->login($_POST['pseudo'], $_POST['password']);
+                        setSession($user->getId(), $user->getPseudo());
                         header('Location: ?action=welcome');
                     } catch (Exception $e) {
                         $this->setInfoMessages($e->getMessage());

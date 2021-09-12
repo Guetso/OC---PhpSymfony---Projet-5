@@ -2,38 +2,57 @@
 
 namespace Blog\Manager;
 
+use Blog\Model\Post;
+use Exception;
 use PDO;
 
 class PostManager extends Manager
 {
     public function getPosts(): array
     {
-        $db = $this->dbConnect(PDO::FETCH_ASSOC);
-        $stmt = $db->query(
-            'SELECT posts.id, members.pseudo AS author, posts.title, posts.subtitle, posts.content, 
-            DATE_FORMAT(posts.modified_at, \'%d/%m/%Y\') AS updatedDate,
-            DATE_FORMAT(posts.modified_at, \'%Hh%m\') AS updatedTime
+        $posts      = [];
+        $db         = $this->dbConnect(PDO::FETCH_ASSOC);
+        $stmt       = $db->query(
+            'SELECT 
+       posts.id, 
+       members.pseudo AS author, 
+       posts.title, 
+       posts.subtitle, 
+       posts.content, 
+       posts.createdAt,
+       posts.modifiedAt
             FROM posts INNER JOIN members ON posts.author = members.id 
-            ORDER BY posts.created_at DESC LIMIT 0, 10');
-        $posts = $stmt->fetchAll();
+            ORDER BY posts.createdAt DESC LIMIT 0, 10');
+        $postsDatas = $stmt->fetchAll();
         $stmt->closeCursor();
 
+        foreach ($postsDatas as $postDatas) {
+            $posts[] = new Post($postDatas);
+        }
         return $posts;
     }
 
-    function getOnePost($id)
+    public function getOnePost($id): Post
     {
-        $db = $this->dbConnect(PDO::FETCH_ASSOC);
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $db->prepare(
-            'SELECT posts.id,members.pseudo AS author, posts.title, posts.subtitle, posts.content, 
-            DATE_FORMAT(posts.created_at, \'%d/%m/%Y\') AS updatedDate,
-            DATE_FORMAT(posts.created_at, \'%Hh%m\') AS updatedTime 
-            FROM posts INNER JOIN members ON posts.author = members.id
-            WHERE posts.id = ?');
+            'SELECT 
+       posts.id,
+       members.pseudo AS author, 
+       posts.title, 
+       posts.subtitle, 
+       posts.content, 
+       posts.createdAt,
+       posts.modifiedAt
+        FROM posts INNER JOIN members ON posts.author = members.id
+        WHERE posts.id = ?');
         $stmt->execute(array($id));
-        $post = $stmt->fetch();
+        $postData = $stmt->fetch();
         $stmt->closeCursor();
-
-        return $post;
+        if ($postData) {
+            return new Post($postData);
+        } else {
+            throw new Exception(code: 404);
+        }
     }
 }

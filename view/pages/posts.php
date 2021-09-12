@@ -1,6 +1,6 @@
 <?php
 /** @var string $pageTitle */
-/** @var array $postsData */
+/** @var array $posts */
 ?>
 
 <section class="news">
@@ -9,19 +9,19 @@
     <span>Derniers billets de blog:</span>
     <br/>
     <?php
-    if (!$postsData) {
+    if (!$posts) {
         echo '<strong>Pas de billet</strong>';
     }
     ?>
 
     <?php
-    foreach ($postsData as $postData) {
+    foreach ($posts as $post) {
         ?>
         <article>
-            <h3><?= $postData['postDetails'] ?> par <?= $postData['postAuthor'] ?></h3>
-            <p><?= $postData['postChapo'] ?>
+            <h3><?= $post->getTitle() ?> - Le <?= $post->getModifiedAt() ?> par <?= $post->getAuthor() ?></h3>
+            <p><?= $post->getSubtitle() ?>
                 <br/>
-                <a href="<?= $postData['postLink'] ?>">Voir plus...</a>
+                <a href="<?= '?action=post&post=' . $post->getId() ?>">Voir plus...</a>
             </p>
         </article>
         <?php

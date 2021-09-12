@@ -8,19 +8,19 @@
 ?>
 
 <article class="news">
-    <h1><?= $post['title'] ?></h1>
-    <span><?= $post['updatedDateTime'] ?></span>
+    <h1><?= $post->getTitle() ?></h1>
+    <span><?= $post->getModifiedAt() ?></span>
     <br/>
     <a href="?action=posts">Retour à la liste des billets</a>
 
     <h3>
-        <?= $post['chapo'] ?>
+        <?= $post->getSubtitle() ?>
     </h3>
 
     <p>
-        <?= $post['content'] ?>
+        <?= $post->getContent() ?>
         <br/>
-        <strong><?= $post['author'] ?></strong>
+        <strong><?= $post->getAuthor() ?></strong>
     </p>
 </article>
 <aside>
@@ -30,9 +30,9 @@
     foreach ($comments as $comment) {
         ?>
         <span>
-          <b><?= $comment['author'] ?></b>, <?= $comment['createdDateTime'] ?>
+          <b><?= $comment->getAuthor() ?></b>, <?= $comment->getCreatedAt() ?>
         </span>
-        <p><?= $comment['content'] ?></p>
+        <p><?= $comment->getContent() ?></p>
         <?php
     }
     ?>
@@ -40,7 +40,7 @@
     <ul>
         <?php
         for ($i = 1; $i <= $commentNbPage; $i++) {
-            $link = '?action=post&post=' . htmlspecialchars($post['id']) . '&page=' . htmlspecialchars($i);
+            $link = '?action=post&post=' . $post->getId() . '&page=' . $i;
             echo '<li>' . '<a href="' . $link . '">' . $i . '</a>' . '</li>';
         }
         ?>

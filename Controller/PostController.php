@@ -33,20 +33,9 @@ class PostController extends Controller
     {
         $postManager = new PostManager();
         $posts       = $postManager->getPosts();
-        $postsData   = [];
-        foreach ($posts as $post) {
-            $postsData[] = [
-                'postDetails' => htmlspecialchars($post['title']) .
-                    ' le ' . htmlspecialchars($post['updatedDate']) .
-                    ' à ' . htmlspecialchars($post['updatedTime']),
-                'postChapo'   => htmlspecialchars($post['subtitle']),
-                'postAuthor'  => $post['author'] ? htmlspecialchars($post['author']) : 'utilisateur inconnu',
-                'postLink'    => '?action=post&post=' . htmlspecialchars($post['id'])
-            ];
-        }
-        $pageTitle = 'Mes articles';
-        $errors    = $this->getInfoMessages();
-        $this->render('pages.posts', compact('postsData', 'pageTitle', 'errors'));
+        $pageTitle   = 'Mes articles';
+        $errors      = $this->getInfoMessages();
+        $this->render('pages.posts', compact('posts', 'pageTitle', 'errors'));
     }
 
     public function displayPost()
@@ -58,26 +47,9 @@ class PostController extends Controller
             $postManager = new PostManager();
 
             try {
-                $postDatas = $postManager->getOnePost($postId);
-                if (!$postDatas) {
-                    $errorTitle      = 'Erreur 404';
-                    $errorMessage    = 'La page demandée n\'existe pas.';
-                    $errorController = new ErrorController($errorTitle, $errorMessage);
-                    $errorController->error();
-                    die;
-                }
-                $post = [
-                    'id'              => $postDatas['id'],
-                    'updatedDateTime' => 'le ' . htmlspecialchars(
-                            $postDatas['updatedDate']) . ' à ' . $postDatas['updatedTime'],
-                    'author'          => htmlspecialchars($postDatas['author']),
-                    'title'           => htmlspecialchars($postDatas['title']),
-                    'chapo'           => htmlspecialchars($postDatas['subtitle']),
-                    'content'         => htmlspecialchars($postDatas['content'])
-                ];
+                $post = $postManager->getOnePost($postId);
 
-                $this->setPageTitle($post['title']);
-
+                $this->setPageTitle($post->getTitle());
                 $commentsDatas = $this->getPostComments($postId);
                 $comments      = $commentsDatas['comments'];
                 $commentNbPage = $commentsDatas['pageCommentNb'];
@@ -94,7 +66,11 @@ class PostController extends Controller
                     'pages.post', compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors', 'connected'),
                 );
             } catch (Exception $e) {
-                $this->setInfoMessages($e->getMessage());
+                $errorTitle      = 'Erreur ' . $e->getCode();
+                $errorMessage    = 'La page demandée n\'existe pas.';
+                $errorController = new ErrorController($errorTitle, $errorMessage);
+                $errorController->error();
+                die;
             }
         } else {
             $errorTitle      = 'Erreur 400';
@@ -112,20 +88,11 @@ class PostController extends Controller
             $pageNbr = 1;
         }
         $offset         = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
-        $commentManager = new CommentManager();
 
-        $commentsDatas = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
-        $comments      = null;
-        foreach ($commentsDatas as $comment) {
-            $comments[] = [
-                'id'              => $comment['id'],
-                'createdDateTime' => 'le ' . htmlspecialchars(
-                        $comment['date']) . ' à ' . $comment['time'],
-                'author'          => htmlspecialchars($comment['author']),
-                'content'         => htmlspecialchars($comment['content'])
-            ];
-        }
+        $commentManager = new CommentManager();
+        $comments = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
         $comments_nb   = $commentManager->getCommentsNb($postId);
+
         $pageCommentNb = ceil($comments_nb / self::COMMENTS_PER_PAGE);
         if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
             $errorTitle      = 'Erreur 404';

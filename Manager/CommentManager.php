@@ -2,8 +2,8 @@
 
 namespace Blog\Manager;
 
+use Blog\Model\Comment;
 use PDO;
-use PDOException;
 
 require_once('Manager/Manager.php');
 
@@ -11,21 +11,24 @@ class CommentManager extends Manager
 {
     public function getPostComments($postId, $commentsPerPage, $offset): array
     {
+        $comments      = [];
         $db   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $db->prepare(
             'SELECT comments.id,comments.postId, members.pseudo AS author , comments.content,
-            DATE_FORMAT(comments.created_at, \'%d/%m/%Y\') AS date,
-            DATE_FORMAT(comments.created_at, \'%Hh%m\') AS time
+            comments.createdAt
             FROM comments INNER JOIN members ON comments.author = members.id
-            WHERE postId = ? ORDER BY comments.created_at DESC
+            WHERE postId = ? ORDER BY comments.createdAt DESC
             LIMIT ? OFFSET ?');
         $stmt->bindParam(1, $postId, PDO::PARAM_INT);
         $stmt->bindParam(2, $commentsPerPage, PDO::PARAM_INT);
         $stmt->bindParam(3, $offset, PDO::PARAM_INT);
         $stmt->execute();
-        $comments = $stmt->fetchAll();
+        $commentsDatas = $stmt->fetchAll();
         $stmt->closeCursor();
 
+        foreach ($commentsDatas as $commentDatas) {
+            $comments[] = new Comment($commentDatas);
+        }
         return $comments;
     }
 
@@ -51,8 +54,6 @@ class CommentManager extends Manager
                     'content' => $comment
                 )
             );
-        } catch (PDOException  $sqlError) {
-            throw $sqlError;
         } finally {
             $stmt->closeCursor();
         }
