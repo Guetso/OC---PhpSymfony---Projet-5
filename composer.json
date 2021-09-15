@@ -17,5 +17,8 @@
     "psr-4": {
       "Blog\\": ""
     }
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*"
   }
 }
