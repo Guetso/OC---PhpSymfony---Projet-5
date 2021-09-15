@@ -45,4 +45,3 @@ try {
     $errorController->error();
     die;
 }
-

@@ -64,5 +64,4 @@ class Comment extends Model
         $this->createdAt = $createdAt;
         return $this;
     }
-
 }

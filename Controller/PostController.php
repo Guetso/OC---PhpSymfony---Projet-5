@@ -63,7 +63,8 @@ class PostController extends Controller
                 }
                 $errors = $this->getInfoMessages();
                 $this->render(
-                    'pages.post', compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors', 'connected'),
+                    'pages.post',
+                    compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors', 'connected'),
                 );
             } catch (Exception $e) {
                 $errorTitle      = 'Erreur ' . $e->getCode();
@@ -119,8 +120,7 @@ class PostController extends Controller
                 try {
                     $commentManager->createPostComment($postId, $_SESSION['id'], $_POST['comment']);
                     header('Location: ?action=post&post=' . $postId);
-                } catch
-                (Exception $e) {
+                } catch (Exception $e) {
                     $this->setInfoMessages($e->getMessage());
                 }
             }

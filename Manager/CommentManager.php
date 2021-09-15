@@ -5,8 +5,6 @@ namespace Blog\Manager;
 use Blog\Model\Comment;
 use PDO;
 
-require_once('Manager/Manager.php');
-
 class CommentManager extends Manager
 {
     public function getPostComments($postId, $commentsPerPage, $offset): array
@@ -18,7 +16,8 @@ class CommentManager extends Manager
             comments.createdAt
             FROM comments INNER JOIN members ON comments.author = members.id
             WHERE postId = ? ORDER BY comments.createdAt DESC
-            LIMIT ? OFFSET ?');
+            LIMIT ? OFFSET ?'
+        );
         $stmt->bindParam(1, $postId, PDO::PARAM_INT);
         $stmt->bindParam(2, $commentsPerPage, PDO::PARAM_INT);
         $stmt->bindParam(3, $offset, PDO::PARAM_INT);

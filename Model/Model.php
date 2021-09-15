@@ -3,10 +3,10 @@
 
 namespace Blog\Model;
 
-
 class Model
 {
-    public function __construct(array $datas) {
+    public function __construct(array $datas)
+    {
         $this->hydrate($datas);
     }
 

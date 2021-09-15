@@ -3,7 +3,6 @@
 
 namespace Blog\Controller;
 
-
 class HomeController extends Controller
 {
     public function __construct()

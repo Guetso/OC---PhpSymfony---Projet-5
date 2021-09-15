@@ -59,7 +59,8 @@ class UserController extends Controller
             }
             if (!preg_match(
                 "#^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$#",
-                $_POST['password'])) {
+                $_POST['password']
+            )) {
                 $validForm = false;
                 $this->setInfoMessages('Le mot de passe n\'est pas valide !');
             }
@@ -100,5 +101,4 @@ class UserController extends Controller
         $errors    = $this->getInfoMessages();
         $this->render('pages.signup', compact('pageTitle', 'errors'));
     }
-
 }

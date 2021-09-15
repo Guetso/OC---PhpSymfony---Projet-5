@@ -22,7 +22,8 @@ class PostManager extends Manager
        posts.createdAt,
        posts.modifiedAt
             FROM posts INNER JOIN members ON posts.author = members.id 
-            ORDER BY posts.createdAt DESC LIMIT 0, 10');
+            ORDER BY posts.createdAt DESC LIMIT 0, 10'
+        );
         $postsDatas = $stmt->fetchAll();
         $stmt->closeCursor();
 
@@ -45,7 +46,8 @@ class PostManager extends Manager
        posts.createdAt,
        posts.modifiedAt
         FROM posts INNER JOIN members ON posts.author = members.id
-        WHERE posts.id = ?');
+        WHERE posts.id = ?'
+        );
         $stmt->execute(array($id));
         $postData = $stmt->fetch();
         $stmt->closeCursor();

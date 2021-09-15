@@ -2,7 +2,6 @@
 
 namespace Blog\Model;
 
-
 class Post extends Model
 {
     private int $id;
