@@ -9,39 +9,47 @@ require_once('utils/config.php');
 
 try {
     if (isset($_GET['action'])) {
-        if ($_GET['action'] == 'welcome') {
-            $homeController = new HomeController();
-            $homeController->displayHome();
-        } elseif ($_GET['action'] == 'signup') {
-            $signupController = new UserController();
-            $signupController->signup();
-        } elseif ($_GET['action'] == 'login') {
-            $loginController = new UserController();
-            $loginController->login();
-        } elseif ($_GET['action'] == 'logout') {
-            $logoutController = new UserController();
-            $logoutController->logout();
-        } elseif ($_GET['action'] == 'posts') {
-            $postsController = new PostController();
-            $postsController->displayPosts();
-        } elseif ($_GET['action'] == 'post') {
-            $postController = new PostController();
-            $postController->displayPost();
-        } else {
-            $errorTitle   = 'Erreur 404';
-            $errorMessage = 'Cette page n\'existe pas.';
-            $errorController = new ErrorController($errorTitle, $errorMessage);
-            $errorController->error();
-            die;
+        switch ($_GET['action']) {
+            case 'welcome':
+                $homeController = new HomeController();
+                echo $homeController->displayHome();
+                break;
+            case 'signup':
+                $signupController = new UserController();
+                echo $signupController->signup();
+                break;
+            case 'login':
+                $loginController = new UserController();
+                echo $loginController->login();
+                break;
+
+            case 'logout':
+                $logoutController = new UserController();
+                $logoutController->logout();
+                break;
+            case 'posts':
+                $postsController = new PostController();
+                echo $postsController->displayPosts();
+                break;
+            case 'post':
+                $postController = new PostController();
+                echo $postController->displayPost();
+                break;
+            default:
+                $errorTitle      = 'Erreur 404';
+                $errorMessage    = 'Cette page n\'existe pas.';
+                $errorController = new ErrorController($errorTitle, $errorMessage);
+                echo $errorController->error();
+                die;
         }
     } else {
         $homeController = new HomeController();
-        $homeController->displayHome();
+        echo $homeController->displayHome(); //TODO pourquoi echo ici et ci dessous et pas dans le postController
     }
 } catch (Exception $e) {
-    $errorTitle   = 'Erreur';
-    $errorMessage = $e->getMessage();
+    $errorTitle      = 'Erreur';
+    $errorMessage    = $e->getMessage();
     $errorController = new ErrorController($errorTitle, $errorMessage);
-    $errorController->error();
+    echo $errorController->error();
     die;
 }

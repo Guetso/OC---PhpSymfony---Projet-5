@@ -1,0 +1,61 @@
+{% extends 'layouts/default.twig' %}
+{% block content %}
+    <article class="news">
+        <h1>{{ post.title }}</h1>
+        <span>{{ post.modifiedAt }} </span>
+        <br/>
+        <a href="?action=posts">Retour à la liste des billets</a>
+
+        <h3>
+            {{ post.subtitle }}
+        </h3>
+
+        <p>
+            {{ post.content }}
+            <br/>
+            <strong>{{ post.author }}</strong>
+        </p>
+    </article>
+
+    {% if comments %}
+        <aside>
+            <h2>Commentaires</h2>
+            {% for comment in comments %}
+                <span>
+          <b>{{ comment.author }}</b>, {{ comment.createdAt }}
+        </span>
+                <p>{{ comment.content }}</p>
+            {% endfor %}
+            {% if commentNbPage > 1 %}
+                <div>
+                    <div>Page:</div>
+                    <ul>
+                        {% for i in 1..commentNbPage %}
+                            <li><a href="?action=post&post={{ post.id }}&page={{ i }}">{{ i }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </aside>
+    {% endif %}
+
+    {% if connected %}
+        <form method="post">
+            <input type="hidden" name="controlSubmit">
+            <label for="comment">Votre commentaire: </label>
+            <br/>
+            <textarea id="comment" name="comment" cols="33" rows="5"></textarea>
+            <br/>
+            <input type="submit" value="Poster">
+        </form>
+    {% endif %}
+{% endblock %}
+{% block errors %}
+    <ul class="error">
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+

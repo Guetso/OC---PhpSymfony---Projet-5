@@ -12,6 +12,7 @@ class ErrorController extends Controller
         $this->setErrorTitle($errorTitle);
         $this->setTitle($errorTitle);
         $this->setErrorMessage($errorMessage);
+        parent::__construct();
     }
 
     public function setTitle($title): Controller
@@ -42,11 +43,12 @@ class ErrorController extends Controller
         return $this;
     }
 
-    public function error()
+    public function error(): string
     {
-        $pageTitle    = $this->getPageTitle();
-        $errorTitle   = $this->getErrorTitle();
-        $errorMessage = $this->getErrorMessage();
-        $this->render('pages.error', compact('errorTitle', 'errorMessage', 'pageTitle'));
+        return $this->render('pages/error.html.twig', [
+            'pageTitle' => $this->getPageTitle(),
+            'errorTitle' => $this->getErrorTitle(),
+            'errorMessage' => $this->getErrorMessage(),
+        ]);
     }
 }

@@ -29,16 +29,19 @@ class PostController extends Controller
         return $this;
     }
 
-    public function displayPosts()
+    public function displayPosts(): string
     {
         $postManager = new PostManager();
         $posts       = $postManager->getPosts();
         $pageTitle   = 'Mes articles';
-        $errors      = $this->getInfoMessages();
-        $this->render('pages.posts', compact('posts', 'pageTitle', 'errors'));
+        return $this->render('pages/posts.html.twig', [
+            'posts'     => $posts,
+            'pageTitle' => $pageTitle,
+            'errors'    => $this->getInfoMessages(),
+        ]);
     }
 
-    public function displayPost()
+    public function displayPost(): string
     {
         if (isset($_GET['post']) && $_GET['post'] > 0) {
             $_GET['post'] = (int)$_GET['post'];
@@ -62,22 +65,25 @@ class PostController extends Controller
                     }
                 }
                 $errors = $this->getInfoMessages();
-                $this->render(
-                    'pages.post',
-                    compact('post', 'comments', 'commentNbPage', 'pageTitle', 'errors', 'connected'),
-                );
+                return $this->render('pages/post.html.twig', [
+                    'pageTitle'     => $pageTitle,
+                    'post'          => $post,
+                    'comments'      => $comments,
+                    'commentNbPage' => $commentNbPage,
+                    'connected'     => $connected,
+                    'errors'        => $errors,
+                ]);
             } catch (Exception $e) {
                 $errorTitle      = 'Erreur ' . $e->getCode();
-                $errorMessage    = 'La page demandée n\'existe pas.';
+                $errorMessage    = 'La page demandée n\'existe pas.' . ' ' . $e->getMessage();
                 $errorController = new ErrorController($errorTitle, $errorMessage);
-                $errorController->error();
-                die;
+                return $errorController->error();
             }
         } else {
             $errorTitle      = 'Erreur 400';
             $errorMessage    = 'La syntaxe de la requête est erronée.';
             $errorController = new ErrorController($errorTitle, $errorMessage);
-            $errorController->error();
+            return $errorController->error();
         }
     }
 
@@ -88,11 +94,11 @@ class PostController extends Controller
         } else {
             $pageNbr = 1;
         }
-        $offset         = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
+        $offset = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
 
         $commentManager = new CommentManager();
-        $comments = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
-        $comments_nb   = $commentManager->getCommentsNb($postId);
+        $comments       = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
+        $comments_nb    = $commentManager->getCommentsNb($postId);
 
         $pageCommentNb = ceil($comments_nb / self::COMMENTS_PER_PAGE);
         if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {

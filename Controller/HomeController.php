@@ -5,16 +5,13 @@ namespace Blog\Controller;
 
 class HomeController extends Controller
 {
-    public function __construct()
+    public function displayHome(): string
     {
-        $this->setPageTitle('Bienvenue sur mon Blog');
-    }
-
-    public function displayHome()
-    {
-        $pageTitle   = $this->getPageTitle();
-        $loginErrors = $this->getInfoMessages();
-        $userName    = $_SESSION['pseudo'] ?? '';
-        $this->render('pages.home', compact('pageTitle', 'userName', 'loginErrors'));
+        $this->setPageTitle('Bienvenue sur mon Blog ');
+        return $this->render('pages/home.html.twig', [
+            'pageTitle' => $this->getPageTitle(),
+            'errors' => $this->getInfoMessages(),
+            'pseudo' =>  $_SESSION['pseudo'] ?? '',
+        ]);
     }
 }

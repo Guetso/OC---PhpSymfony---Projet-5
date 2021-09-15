@@ -4,7 +4,7 @@ namespace Blog\Manager;
 
 use PDO;
 
-class Manager
+abstract class Manager
 {
     protected function dbConnect($fetchMode = null): PDO
     {

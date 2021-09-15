@@ -3,7 +3,7 @@
 
 namespace Blog\Model;
 
-class Model
+abstract class Model
 {
     public function __construct(array $datas)
     {

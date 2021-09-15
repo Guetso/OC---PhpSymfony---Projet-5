@@ -8,7 +8,7 @@ use Exception;
 
 class UserController extends Controller
 {
-    public function login()
+    public function login(): string
     {
         if (isset($_POST['controlSubmit'])) {
             $validForm = true;
@@ -22,27 +22,29 @@ class UserController extends Controller
                 $userManager       = new UserManager();
                 try {
                     $user = $userManager->login($_POST['pseudo'], $_POST['password']);
-                    setSession($user->getId(), $user->getPseudo());
+                    UserController::setSession($user->getId(), $user->getPseudo());
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
                     $this->setInfoMessages($e->getMessage());
                 }
             }
         }
-        $pageTitle = 'Connexion';
-        $errors    = $this->getInfoMessages();
-        $this->render('pages.login', compact('pageTitle', 'errors'));
+        $this->setPageTitle('Connexion');
+        return $this->render('pages/login.html.twig', [
+            'pageTitle' => $this->getPageTitle(),
+            'errors'    => $this->getInfoMessages(),
+            'pseudo'  => $_SESSION['pseudo'] ?? $_POST['pseudo'] ?? '',
+        ]);
     }
 
     public function logout()
     {
         $_SESSION = array();
         session_destroy();
-        $homeController = new HomeController();
-        $homeController->displayHome();
+        header('Location: ?action=welcome');
     }
 
-    public function signup()
+    public function signup(): string
     {
         if (isset($_POST['controlSubmit'])) {
             $validForm = true;
@@ -80,7 +82,7 @@ class UserController extends Controller
                     $userManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                     try {
                         $user = $userManager->login($_POST['pseudo'], $_POST['password']);
-                        setSession($user->getId(), $user->getPseudo());
+                        UserController::setSession($user->getId(), $user->getPseudo());
                         header('Location: ?action=welcome');
                     } catch (Exception $e) {
                         $this->setInfoMessages($e->getMessage());
@@ -97,8 +99,18 @@ class UserController extends Controller
                 }
             }
         }
-        $pageTitle = 'Inscription';
-        $errors    = $this->getInfoMessages();
-        $this->render('pages.signup', compact('pageTitle', 'errors'));
+        $this->setPageTitle('Inscription');
+        return $this->render('pages/signup.html.twig', [
+            'pageTitle' => $this->getPageTitle(),
+            'errors'    => $this->getInfoMessages(),
+            'pseudo'  => $_POST['pseudo'] ?? '',
+        ]);
+    }
+
+    public static function setSession($id, $pseudo)
+    {
+        $_SESSION['connected'] = true;
+        $_SESSION['id']        = $id;
+        $_SESSION['pseudo']    = $pseudo;
     }
 }

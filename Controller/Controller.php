@@ -2,23 +2,25 @@
 
 namespace Blog\Controller;
 
-class Controller
-{
-    private const VIEWPATH = __DIR__ . '/../' . 'view/';
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
+abstract class Controller
+{
+    protected Environment $twig;
     protected string $template = 'default';
     protected string $pageTitle = 'Mon Blog';
     protected array $infoMessages = [];
 
-    public function render($view, $variables = [])
+    public function __construct()
     {
-        ob_start();
-        extract($variables);
-        $viewPath = self::VIEWPATH . "" . str_replace('.', '/', $view) . ".php";
-        require($viewPath);
-        $content = ob_get_clean();
-        $templatePath = self::VIEWPATH . "/templates/" . $this->getTemplate() . ".php";
-        require($templatePath);
+        $loader = new FilesystemLoader(__DIR__ . '/../view');
+        $this->twig   = new Environment($loader, []); //TODO Set cache option
+    }
+
+    public function render($view, $variables = []): string
+    {
+        return $this->twig->render($view, $variables); //TODO Voir pourquoi unhandled
     }
 
     public function getTemplate(): string

@@ -1,15 +1,10 @@
 <?php
+
 require 'vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->safeLoad();
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-}
-
-function setSession($id, $pseudo) {
-    $_SESSION['connected'] = true;
-    $_SESSION['id'] = $id;
-    $_SESSION['pseudo'] = $pseudo;
 }

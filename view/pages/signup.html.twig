@@ -1,36 +1,24 @@
-<?php
-/** @var array $errors */
-/** @var string $pageTitle */
-?>
-
+{% extends 'layouts/default.twig' %}
+{% block content %}
 <h1><?= $pageTitle ?></h1>
 
 <form method="post">
     <input type="hidden" name="controlSubmit">
 
     <label for="pseudo">Pseudo: </label>
-    <input id="pseudo" type="text" name="pseudo" value="<?= $_POST['pseudo'] ?? '' ?>">
+    <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}">
     <br/>
     <label for="email">Email: </label>
-    <input id="email" type="email" name="email" value="<?= $_POST['email'] ?? '' ?>">
-    <span class="error"><?= $errorMessages['emailError'] ?? '' ?></span>
+    <input id="email" type="email" name="email" value="{{ email }}">
     <br/>
     <label for="password">Mot de passe: </label>
     <input id="password" type="password" name="password">
-    <span class="error"><?= $errorMessages['passError'] ?? '' ?></span>
     <br/>
     <label for="passwordConfirm">Confirmer le mot de passe</label>
     <input id="passwordConfirm" type="password" name="passwordConfirm">
-    <span class="error"><?= $errorMessages['confirmError'] ?? '' ?></span>
     <br/>
     <input type="submit" value="S'inscrire">
 </form>
-<br/>
-<span class="error">
-        <?php foreach ($errors as $errorMessage) {
-            echo $errorMessage . '<br>';
-        } ?>
-</span>
 <br/>
 <div>
     <span>Un mot de passe valide aura:</span>
@@ -43,3 +31,11 @@
         <li>aucun autre caractère spécial</li>
     </ul>
 </div>
+{% endblock %}
+{% block errors %}
+    <ul class="error">
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
