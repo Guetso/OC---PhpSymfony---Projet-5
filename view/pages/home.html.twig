@@ -1,0 +1,13 @@
+{% extends 'layouts/default.twig' %}
+{% block content %}
+    <h1>{{ pageTitle }} {{ pseudo }} !</h1>
+    <a href="?action=posts">Voir les articles</a>
+    <br/>
+
+    {% if pseudo %}
+    <a href="?action=logout">Se déconnecter</a>
+    {% else %}
+    <a href="?action=login">Se connecter</a><br/>
+    <a href="?action=signup">S'inscrire</a>
+    {% endif %}
+{% endblock %}

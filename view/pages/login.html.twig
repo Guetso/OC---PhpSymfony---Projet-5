@@ -1,0 +1,22 @@
+{% extends 'layouts/default.twig' %}
+{% block content %}
+    <h1>{{ pageTitle }}</h1>
+
+    <form method="post">
+        <input type="hidden" name="controlSubmit">
+        <label for="pseudo">Pseudo: </label>
+        <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}">
+        <br/>
+        <label for="password">Mot de passe: </label>
+        <input id="password" type="password" name="password">
+        <br/>
+        <input type="submit" value="Se connecter">
+    </form>
+{% endblock %}
+{% block errors %}
+    <ul class="error">
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

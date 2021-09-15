@@ -1,52 +1,53 @@
 <?php
-namespace Hugo\Blog\Model;
+
+namespace Blog\Manager;
+
+use Blog\Model\User;
+use PDO;
 use Exception;
-use PDOException;
 
-require_once('model/Manager.php');
-
-class AuthManager extends Manager
+class UserManager extends Manager
 {
-    private const ERRORLOGIN = 'Mauvais identifiant ou mot de passe !';
+    private const ERROR_LOGIN = 'Mauvais identifiant ou mot de passe !';
+
     public function signup($pseudo, $pass_hache, $email)
     {
-        $bd = $this->dbConnect();
+        $bd   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $bd->prepare('INSERT INTO members (pseudo, pass, email) VALUES(:pseudo, :pass, :email)');
         try {
-            $stmt->execute(array(
+            $stmt->execute(
+                array(
                     'pseudo' => $pseudo,
-                    'pass' => $pass_hache,
-                    'email' => $email)
+                    'pass'   => $pass_hache,
+                    'email'  => $email
+                )
             );
-        } catch (PDOException  $sqlError) {
-            throw $sqlError;
         } finally {
             $stmt->closeCursor();
         }
     }
 
-    public function getLogin($pseudo, $pass)
+    public function login($pseudo, $pass): User
     {
-        $bd = $this->dbConnect();
+        $bd   = $this->dbConnect(PDO::FETCH_ASSOC);
         $stmt = $bd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');
         try {
-            $stmt->execute(array(
+            $stmt->execute(
+                array(
                     'pseudo' => $pseudo
                 )
             );
-            $response = $stmt->fetch();
+            $response      = $stmt->fetch();
             $isPassCorrect = password_verify($pass, $response['pass'] ?? '');
             if (!$response) {
-                throw new Exception(self::ERRORLOGIN);
+                throw new Exception(self::ERROR_LOGIN);
             } else {
                 if ($isPassCorrect) {
-                    return $response;
+                    return new User($response);
                 } else {
-                    throw new Exception(self::ERRORLOGIN);
+                    throw new Exception(self::ERROR_LOGIN);
                 }
             }
-        } catch (Exception $e) {
-            throw $e;
         } finally {
             $stmt->closeCursor();
         }

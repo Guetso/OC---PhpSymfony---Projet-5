@@ -1,0 +1,24 @@
+{% extends 'layouts/default.twig' %}
+{% block content %}
+    <section class="news">
+        <h1><?= $pageTitle ?></h1>
+        <a href="./">Accueil</a>
+        <span>Derniers billets de blog:</span>
+        <br/>
+        {% if posts %}
+            {% for post in posts %}
+                <article>
+                    <h3> {{ post.title }} - Le {{ post.modifiedAt }} par {{ post.author }}</h3>
+                    <p>{{ post.subtitle }}
+                        <br/>
+                        <a href="?action=post&post={{ post.id }}">Voir plus...</a>
+                    </p>
+                </article>
+            {% endfor %}
+        {% else %}
+            <div>
+                <strong>Pas de billet</strong>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
