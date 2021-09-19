@@ -4,6 +4,8 @@ namespace Blog\Controller;
 
 class ErrorController extends Controller
 {
+    protected string $template = 'default';
+    protected string $pageTitle = 'Mon Blog';
     protected string $errorTitle;
     protected string $errorMessage;
 

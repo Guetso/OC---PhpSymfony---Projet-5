@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Blog\Controller;
+namespace Blog\Controller\App;
 
 use Blog\Manager\UserManager;
 use Exception;
 
-class UserController extends Controller
+class UserController extends AppController
 {
     public function login(): string
     {

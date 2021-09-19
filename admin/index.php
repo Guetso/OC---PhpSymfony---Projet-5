@@ -1,6 +1,7 @@
 <?php
 
 use Blog\Controller\Admin\HomeController;
+use Blog\Controller\Admin\PostController;
 use Blog\Controller\ErrorController;
 
 require_once('../utils/config.php');
@@ -12,6 +13,22 @@ try {
                 case 'welcome':
                     $homeController = new HomeController();
                     echo $homeController->displayHome();
+                    break;
+                case 'posts':
+                    $postController = new PostController();
+                    echo $postController->displayPosts();
+                    break;
+                case 'post':
+                    $postController = new PostController();
+                    echo $postController->displayPost();
+                    break;
+                case 'post.add':
+                    $postController = new PostController();
+                    echo $postController->addPost();
+                    break;
+                case 'post.delete':
+                    $postController = new PostController();
+                    $postController->deletePost();
                     break;
                 default:
                     $errorTitle      = 'Erreur 404';

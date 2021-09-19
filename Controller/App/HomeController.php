@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Blog\Controller;
+namespace Blog\Controller\App;
 
-class HomeController extends Controller
+class HomeController extends AppController
 {
     public function displayHome(): string
     {

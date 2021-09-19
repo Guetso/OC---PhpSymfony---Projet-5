@@ -8,8 +8,8 @@ use Twig\Loader\FilesystemLoader;
 abstract class Controller
 {
     protected Environment $twig;
-    protected string $template = 'default';
-    protected string $pageTitle = 'Mon Blog';
+    protected string $template;
+    protected string $pageTitle;
     protected array $infoMessages = [];
 
     public function __construct()
@@ -39,7 +39,7 @@ abstract class Controller
         return $this->pageTitle;
     }
 
-    public function setPageTitle($title): Controller
+    public function setPageTitle(string $title): Controller
     {
         $this->pageTitle = $title;
         return $this;

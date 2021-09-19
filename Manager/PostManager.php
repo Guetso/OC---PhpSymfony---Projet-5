@@ -57,4 +57,42 @@ class PostManager extends Manager
             throw new Exception(code: 404);
         }
     }
+
+    public function addPost($postDatas)
+    {
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
+        $stmt = $db->prepare(
+            'INSERT INTO posts (title, subtitle, content, author) 
+        VALUES(:postTitle, :postSubtitle, :postContent, :postAuthor)'
+        );
+        try {
+            $stmt->execute($postDatas);
+        } finally {
+            $stmt->closeCursor();
+        }
+    }
+
+    public function modifyPost($postDatas)
+    {
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
+        $stmt = $db->prepare(
+            "UPDATE posts SET title = :postTitle, subtitle = :postSubtitle,content = :postContent 
+            WHERE posts.id = :postId"
+        );
+        try {
+            $stmt->execute($postDatas);
+        } finally {
+            $stmt->closeCursor();
+        }
+    }
+
+    public function deletePost($id)
+    {
+        $db   = $this->dbConnect(PDO::FETCH_ASSOC);
+        $stmt = $db->prepare(
+            'DELETE FROM posts WHERE id = ?'
+        );
+        $stmt->execute(array($id));
+        $stmt->closeCursor();
+    }
 }
