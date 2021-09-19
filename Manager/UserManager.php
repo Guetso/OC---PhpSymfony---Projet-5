@@ -30,7 +30,7 @@ class UserManager extends Manager
     public function login($pseudo, $pass): User
     {
         $bd   = $this->dbConnect(PDO::FETCH_ASSOC);
-        $stmt = $bd->prepare('SELECT id, pseudo, pass FROM members WHERE pseudo = :pseudo');
+        $stmt = $bd->prepare('SELECT id, pseudo, pass, isAdmin FROM members WHERE pseudo = :pseudo');
         try {
             $stmt->execute(
                 array(

@@ -1,18 +1,19 @@
 <?php
 
+namespace Blog\Controller\Admin;
 
-namespace Blog\Controller;
+use Blog\Controller\Controller;
+use Blog\Controller\ErrorController;
 
 class HomeController extends Controller
 {
     public function displayHome(): string
     {
-        $this->setPageTitle('Bienvenue sur mon Blog ');
-        return $this->render('pages/home.html.twig', [
+        $this->setPageTitle('Bienvenue sur l\'espace administration ');
+        return $this->render('pages/admin/home.html.twig', [
             'pageTitle' => $this->getPageTitle(),
             'errors'    => $this->getInfoMessages(),
             'pseudo'    => $_SESSION['pseudo'] ?? '',
-            'isAdmin'    => $_SESSION['isAdmin'] ?? '',
         ]);
     }
 }

@@ -22,7 +22,7 @@ class UserController extends Controller
                 $userManager       = new UserManager();
                 try {
                     $user = $userManager->login($_POST['pseudo'], $_POST['password']);
-                    UserController::setSession($user->getId(), $user->getPseudo());
+                    UserController::setSession($user->getId(), $user->getPseudo(), $user->getIsAdmin());
                     header('Location: ?action=welcome');
                 } catch (Exception $e) {
                     $this->setInfoMessages($e->getMessage());
@@ -33,15 +33,8 @@ class UserController extends Controller
         return $this->render('pages/login.html.twig', [
             'pageTitle' => $this->getPageTitle(),
             'errors'    => $this->getInfoMessages(),
-            'pseudo'  => $_SESSION['pseudo'] ?? $_POST['pseudo'] ?? '',
+            'pseudo'    => $_SESSION['pseudo'] ?? $_POST['pseudo'] ?? '',
         ]);
-    }
-
-    public function logout()
-    {
-        $_SESSION = array();
-        session_destroy();
-        header('Location: ?action=welcome');
     }
 
     public function signup(): string
@@ -82,7 +75,7 @@ class UserController extends Controller
                     $userManager->signup($_POST['pseudo'], $pass_hache, $_POST['email']);
                     try {
                         $user = $userManager->login($_POST['pseudo'], $_POST['password']);
-                        UserController::setSession($user->getId(), $user->getPseudo());
+                        UserController::setSession($user->getId(), $user->getPseudo(), $user->getIsAdmin());
                         header('Location: ?action=welcome');
                     } catch (Exception $e) {
                         $this->setInfoMessages($e->getMessage());
@@ -103,14 +96,22 @@ class UserController extends Controller
         return $this->render('pages/signup.html.twig', [
             'pageTitle' => $this->getPageTitle(),
             'errors'    => $this->getInfoMessages(),
-            'pseudo'  => $_POST['pseudo'] ?? '',
+            'pseudo'    => $_POST['pseudo'] ?? '',
         ]);
     }
 
-    public static function setSession($id, $pseudo)
+    public static function setSession($id, $pseudo, $isAdmin)
     {
         $_SESSION['connected'] = true;
         $_SESSION['id']        = $id;
         $_SESSION['pseudo']    = $pseudo;
+        $_SESSION['isAdmin']   = $isAdmin;
+    }
+
+    public function logout()
+    {
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ?action=welcome');
     }
 }
