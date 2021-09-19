@@ -1,8 +1,8 @@
 <?php
 
-use Blog\Controller\HomeController;
-use Blog\Controller\UserController;
-use Blog\Controller\PostController;
+use Blog\Controller\App\HomeController;
+use Blog\Controller\App\UserController;
+use Blog\Controller\App\PostController;
 use Blog\Controller\ErrorController;
 
 require_once('utils/config.php');

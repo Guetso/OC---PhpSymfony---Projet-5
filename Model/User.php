@@ -44,7 +44,7 @@ class User extends Model
         return $this;
     }
 
-    public function isAdmin(): bool
+    public function getIsAdmin(): bool
     {
         return $this->isAdmin;
     }

@@ -5,9 +5,12 @@
     <br/>
 
     {% if pseudo %}
-    <a href="?action=logout">Se déconnecter</a>
+        <a href="?action=logout">Se déconnecter</a>
     {% else %}
-    <a href="?action=login">Se connecter</a><br/>
-    <a href="?action=signup">S'inscrire</a>
+        <a href="?action=login">Se connecter</a><br/>
+        <a href="?action=signup">S'inscrire</a>
+    {% endif %}
+    {% if isAdmin %}
+        <br/><a href="admin">Espace admin</a>
     {% endif %}
 {% endblock %}

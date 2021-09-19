@@ -1,0 +1,51 @@
+{% extends 'layouts/admin.twig' %}
+{% block content %}
+
+    <h1>{{ pageTitle }}</h1>
+    <a href="?action=posts">Retour à la liste des billets</a>
+
+    <form method="post">
+        <input type="hidden" name="controlSubmit">
+        <input type="hidden" name="id" value="{{ post.id }}">
+        <label for="title">Titre: </label>
+        <input id="title" type="text" name="title" value="{{ post.title }}" maxlength="255">
+        <br/>
+        <label for="subtitle">Chapo: </label>
+        <input id="subtitle" type="text" name="subtitle" value="{{ post.subtitle }}" maxlength="255">
+        <br/>
+        <label for="content" hidden>Corps: </label>
+        <textarea id="content" name="content" cols="50" rows="20" maxlength="10000">{{ post.content }}</textarea>
+        <br/>
+        <input type="submit" value="Valider">
+    </form>
+
+
+    <ul class="error">
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if comments %}
+        <aside>
+            <h2>Commentaires</h2>
+            {% for comment in comments %}
+                <span>
+          <b>{{ comment.author }}</b>, {{ comment.createdAt }}
+        </span>
+                <p>{{ comment.content }}</p>
+            {% endfor %}
+            {% if commentNbPage > 1 %}
+                <div>
+                    <div>Page:</div>
+                    <ul>
+                        {% for i in 1..commentNbPage %}
+                            <li><a href="?action=post&post={{ post.id }}&page={{ i }}">{{ i }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </aside>
+    {% endif %}
+
+{% endblock %}
