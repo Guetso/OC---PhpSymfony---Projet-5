@@ -9,6 +9,7 @@ class Comment extends Model
     private string $author;
     private string $content;
     private string $createdAt;
+    private string $validated;
 
     public function getId(): int
     {
@@ -62,6 +63,17 @@ class Comment extends Model
     public function setCreatedAt(string $createdAt): Comment
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getValidated(): string
+    {
+        return $this->validated;
+    }
+
+    public function setValidated(string $validated): Comment
+    {
+        $this->validated = $validated;
         return $this;
     }
 }
