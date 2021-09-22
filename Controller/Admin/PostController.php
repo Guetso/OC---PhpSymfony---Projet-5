@@ -60,8 +60,32 @@ class PostController extends AdminController
                 $connected     = false;
                 if (isset($_SESSION['connected']) && $_SESSION['connected'] === true) {
                     $connected = true;
-                    if (isset($_POST['controlSubmit'])) {
+                    if (isset($_POST['postControlSubmit'])) {
                         $this->postForm();
+                    }
+                    if (isset($_POST['commentControlSubmit']) && isset($_POST['valid']) && isset($_POST['id'])) {
+                        if ($_POST['id'] > 0) {
+                            $_POST['id'] = (int)$_POST['id'];
+                            $this->toggleCommentState(1, $_POST['id']);
+                        } else {
+                            throw new Exception();
+                        }
+                    }
+                    if (isset($_POST['commentControlSubmit']) && isset($_POST['invalid']) && isset($_POST['id'])) {
+                        if ($_POST['id'] > 0) {
+                            $_POST['id'] = (int)$_POST['id'];
+                            $this->toggleCommentState(0, $_POST['id']);
+                        } else {
+                            throw new Exception();
+                        }
+                    }
+                    if (isset($_POST['commentControlSubmit']) && isset($_POST['delete']) && isset($_POST['id'])) {
+                        if ($_POST['id'] > 0) {
+                            $_POST['id'] = (int)$_POST['id'];
+                            $this->deleteComment($_POST['id']);
+                        } else {
+                            throw new Exception();
+                        }
                     }
                 }
                 $errors = $this->getInfoMessages();
@@ -95,7 +119,6 @@ class PostController extends AdminController
             $pageNbr = 1;
         }
         $offset = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
-
         $commentManager = new CommentManager();
         $comments       = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
         $comments_nb    = $commentManager->getCommentsNb($postId);
@@ -105,7 +128,7 @@ class PostController extends AdminController
             $errorTitle      = 'Erreur 404';
             $errorMessage    = 'Cette page n\'existe pas !';
             $errorController = new ErrorController($errorTitle, $errorMessage);
-            $errorController->error();
+            echo $errorController->error();
             die;
         }
         return compact('comments', 'pageCommentNb');
@@ -181,5 +204,19 @@ class PostController extends AdminController
                 $this->setInfoMessages($e->getMessage());
             }
         }
+    }
+
+    public function toggleCommentState($validState, $commentId)
+    {
+        $commentsManager = new CommentManager();
+        $commentsManager->toggleValidated($validState, $commentId);
+        header('Refresh:0');
+    }
+
+    public function deleteComment($commentId)
+    {
+        $commentsManager = new CommentManager();
+        $commentsManager->deleteComment($commentId);
+        header('Refresh:0');
     }
 }

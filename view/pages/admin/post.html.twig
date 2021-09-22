@@ -5,7 +5,7 @@
     <a href="?action=posts">Retour à la liste des billets</a>
 
     <form method="post">
-        <input type="hidden" name="controlSubmit">
+        <input type="hidden" name="postControlSubmit">
         <input type="hidden" name="id" value="{{ post.id }}">
         <label for="title">Titre: </label>
         <input id="title" type="text" name="title" value="{{ post.title }}" maxlength="255">
@@ -30,9 +30,25 @@
         <aside>
             <h2>Commentaires</h2>
             {% for comment in comments %}
-                <span>
-          <b>{{ comment.author }}</b>, {{ comment.createdAt }}
-        </span>
+                <span><b>{{ comment.author }}</b>, {{ comment.createdAt }}</span>
+                {{ comment.id }}
+                <div>
+                    <form method="post">
+                        <input type="hidden" name="commentControlSubmit">
+                        <b>
+                            {% if comment.validated %}
+                                Validé
+                                <input type="hidden" name="id" value="{{ comment.id }}">
+                                <input type="submit" name="invalid" value="Invalider"/>
+                            {% else %}
+                                Non validé
+                                <input type="hidden" name="id" value="{{ comment.id }}">
+                                <input type="submit" name="valid" value="Valider"/>
+                            {% endif %}
+                            <input type="submit" name="delete" value="Supprimer"/>
+                        </b>
+                    </form>
+                </div>
                 <p>{{ comment.content }}</p>
             {% endfor %}
             {% if commentNbPage > 1 %}

@@ -97,15 +97,15 @@ class PostController extends AppController
         $offset = ($pageNbr - 1) * self::COMMENTS_PER_PAGE;
 
         $commentManager = new CommentManager();
-        $comments       = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset);
-        $comments_nb    = $commentManager->getCommentsNb($postId);
+        $comments       = $commentManager->getPostComments($postId, self::COMMENTS_PER_PAGE, $offset, true);
+        $comments_nb    = $commentManager->getCommentsNb($postId, true);
 
         $pageCommentNb = ceil($comments_nb / self::COMMENTS_PER_PAGE);
         if (isset($_GET['page']) && $_GET['page'] > $pageCommentNb) {
             $errorTitle      = 'Erreur 404';
             $errorMessage    = 'Cette page n\'existe pas !';
             $errorController = new ErrorController($errorTitle, $errorMessage);
-            $errorController->error();
+            echo $errorController->error();
             die;
         }
         return compact('comments', 'pageCommentNb');
@@ -123,7 +123,7 @@ class PostController extends AppController
             $commentManager   = new CommentManager();
             $postId           = $this->getPostId();
             try {
-                $commentManager->createPostComment($postId, $_SESSION['id'], $_POST['comment']);
+                $commentManager->createComment($postId, $_SESSION['id'], $_POST['comment']);
                 header('Location: ?action=post&post=' . $postId);
             } catch (Exception $e) {
                 $this->setInfoMessages($e->getMessage());
