@@ -1,11 +1,12 @@
 <?php
 
+use Blog\Controller\App\CommentController;
 use Blog\Controller\App\HomeController;
 use Blog\Controller\App\UserController;
 use Blog\Controller\App\PostController;
 use Blog\Controller\ErrorController;
 
-require_once('utils/config.php');
+require_once(__DIR__ . '/../utils/config.php');
 
 try {
     if (isset($_GET['action'])) {
@@ -22,7 +23,6 @@ try {
                 $loginController = new UserController();
                 echo $loginController->login();
                 break;
-
             case 'logout':
                 $logoutController = new UserController();
                 $logoutController->logout();
@@ -33,6 +33,14 @@ try {
                 break;
             case 'post':
                 $postController = new PostController();
+                try {
+                    if (isset($_POST['newCommentSubmit'])) {
+                        $commentController = new CommentController();
+                        $commentController->commentForm();
+                    }
+                } catch (Exception $e) {
+                    $postController->setInfoMessages($e->getMessage());
+                }
                 echo $postController->displayPost();
                 break;
             default:

@@ -1,10 +1,11 @@
 <?php
 
+use Blog\Controller\Admin\CommentController;
 use Blog\Controller\Admin\HomeController;
 use Blog\Controller\Admin\PostController;
 use Blog\Controller\ErrorController;
 
-require_once('../utils/config.php');
+require_once(__DIR__ . '/../../utils/config.php');
 
 try {
     if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) {
@@ -20,6 +21,15 @@ try {
                     break;
                 case 'post':
                     $postController = new PostController();
+                    if (isset($_POST['postControlSubmit'])) {
+                        $postController->postForm();
+                    }
+                    if (isset($_POST['commentControlSubmit'])) {
+                        $commentController = new CommentController();
+                        if (isset($_POST['valid'])) {
+                            $commentController->toggleCommentState();
+                        }
+                    }
                     echo $postController->displayPost();
                     break;
                 case 'post.add':
